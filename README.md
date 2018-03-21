@@ -11,6 +11,8 @@ I will be using Vanilla Javascript, HTML5 Canvas, and CSS for this project. I an
 
 # Wireframes
 
+![Wireframes](https://raw.githubusercontent.com/polyfish42/the-witness-puzzle-game/master/docs/The%20Witness%20Wireframes.png)
+
 # Backend
 None
 
