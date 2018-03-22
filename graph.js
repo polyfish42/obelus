@@ -66,7 +66,12 @@ class Graph {
 }
 
 function generatePuzzle() {
-  graph = generateSquare(new Graph, [200,200])
+  graph = new Graph
+
+  generateSquare(graph, [200,200])
+  generateSquare(graph, [200,420])
+  generateSquare(graph, [420,200])
+  generateSquare(graph, [420,420])
 
   graph.getAdjList().forEach((value, key) => key.draw())
 }
