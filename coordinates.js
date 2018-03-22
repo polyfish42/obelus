@@ -90,4 +90,4 @@ function generatePuzzle(width, height) {
   edges.forEach(e => e.draw(ctx))
 }
 
-generatePuzzle(7,3)
+generatePuzzle(3,3)
