@@ -77,19 +77,6 @@ function mouseMoveHandler(e) {
     y += dy
   }
 
-  // if (x === 230 && y === 210 && direction != MIDDLE) {
-  //   direction = MIDDLE
-  //   elbows.push([230, 210])
-  // } else if (x < 230 && direction === MIDDLE) {
-  //   direction = HORIZONTAL
-  //   elbows = []
-  // } else if (x === 230) {
-  //   x = 230
-  //   direction = VERTICAL
-  // } else if (y === 210) {
-  //   direction = HORIZONTAL
-  // }
-
   if (x >= 220 && x <= 240 && y >= 200 && y <= 220) {
     direction = MIDDLE
   }
