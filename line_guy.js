@@ -2,6 +2,8 @@ var canvas = document.getElementById("myCanvas");
 canvas.requestPointerLock = canvas.requestPointerLock ||
                             canvas.mozRequestPointerLock;
 
+document.exitPointerLock = document.exitPointerLock    ||
+                           document.mozExitPointerLock;
 var ctx = canvas.getContext("2d")
 
 
@@ -21,13 +23,21 @@ let lastMouseCoords = [0,0];
 document.addEventListener("click", clickHandler, false)
 
 function clickHandler(e) {
-  canvas.requestPointerLock()
-  lastMouseCoords = [e.screenX, e.screenY]
+  if (document.pointerLockElement === canvas ||
+      document.mozPointerLockElement === canvas) {
+    document.exitPointerLock()
+    x = 20
+    y = 210
+    elbows = []
+  } else {
+    canvas.requestPointerLock()
+    lastMouseCoords = [e.screenX, e.screenY]
 
-  if ("onpointerlockchange" in document) {
-    document.addEventListener('pointerlockchange', lockChangeAlert, false);
-  } else if ("onmozpointerlockchange" in document) {
-    document.addEventListener('mozpointerlockchange', lockChangeAlert, false);
+    if ("onpointerlockchange" in document) {
+      document.addEventListener('pointerlockchange', lockChangeAlert, false);
+    } else if ("onmozpointerlockchange" in document) {
+      document.addEventListener('mozpointerlockchange', lockChangeAlert, false);
+    }
   }
 }
 
