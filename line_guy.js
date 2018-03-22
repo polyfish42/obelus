@@ -1,4 +1,7 @@
 var canvas = document.getElementById("myCanvas");
+canvas.requestPointerLock = canvas.requestPointerLock ||
+                            canvas.mozRequestPointerLock;
+
 var ctx = canvas.getContext("2d")
 
 
@@ -18,13 +21,30 @@ let lastMouseCoords = [0,0];
 document.addEventListener("click", clickHandler, false)
 
 function clickHandler(e) {
+  canvas.requestPointerLock()
   lastMouseCoords = [e.screenX, e.screenY]
-  document.addEventListener("mousemove", mouseMoveHandler, false);
+
+  if ("onpointerlockchange" in document) {
+    document.addEventListener('pointerlockchange', lockChangeAlert, false);
+  } else if ("onmozpointerlockchange" in document) {
+    document.addEventListener('mozpointerlockchange', lockChangeAlert, false);
+  }
+}
+
+function lockChangeAlert() {
+  if (document.pointerLockElement === canvas ||
+      document.mozPointerLockElement === canvas) {
+    console.log('The pointer lock status is now locked');
+    document.addEventListener("mousemove", mouseMoveHandler, false);
+  } else {
+    console.log('The pointer lock status is now unlocked');
+    document.removeEventListener("mousemove", mouseMoveHandler, false);
+  }
 }
 
 function mouseMoveHandler(e) {
-  const dx = lastMouseCoords[0] - e.screenX
-  const dy = lastMouseCoords[1] - e.screenY
+  const dx = e.movementX
+  const dy = e.movementY
 
   if (direction === MIDDLE) {
     if (Math.abs(dx) > Math.abs(dy)) {
@@ -39,12 +59,12 @@ function mouseMoveHandler(e) {
   }
 
   if (direction === HORIZONTAL) {
-    x -= dx
+    x += dx
   } else if (direction === VERTICAL) {
-    y -= dy
+    y += dy
   } else {
-    x -= dx
-    y -= dy
+    x += dx
+    y += dy
   }
 
   // if (x === 230 && y === 210 && direction != MIDDLE) {
