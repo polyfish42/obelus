@@ -36,7 +36,7 @@ function addLineSegment(dx, dy) {
     }
   } else if (dx < 0 && notInBoxBounds(x1 - dx, y1 - dy)) {
     for (var i = dx; i < 0; i++) {
-      lineSegments[segmentIndex++] = [x1 - dx, y1]
+      lineSegments[segmentIndex++] = [x1 - dx, y1 - dy]
     }
   }
 }
@@ -91,4 +91,4 @@ function draw() {
   drawBox()
 }
 
-setInterval(draw, 10)
+setInterval(draw, 1)
