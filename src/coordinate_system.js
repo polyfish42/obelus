@@ -47,13 +47,28 @@ export class Vertex {
     this.lineWidth = 60
     this.u = u * this.size + this.lineWidth/4
     this.v = v * this.size + this.size + this.lineWidth/4
+    this.elbowPlaced = false
   }
 
-  pointInSurroundingRegion(u,v) {
+  pointInside(u,v) {
     if (u > this.u - 15 && u < this.u + 15 && v > this.v - 15 && v < this.v + 15) {
       return true
     }
     return false
+  }
+
+  isElbowPlaced() {
+    return this.elbowPlaced
+  }
+
+  placeElbow(){
+    this.elbowPlaced = true
+    return [this.u, this.v]
+  }
+
+  removeElbow(){
+    this.elbowPlaced = false
+    return [this.u, this.v]
   }
 
   draw(ctx) {

@@ -3,6 +3,7 @@ import * as ArraySet from './util/array_set'
 const HORIZONTAL = "HORIZONTAL"
 const VERTICAL = "VERTICAL"
 const MIDDLE = "MIDDLE"
+const NOT_IN_VERTEX = "NOT_IN_VERTEX"
 
 export default class Line {
   constructor(u, v, vertices) {
@@ -14,23 +15,19 @@ export default class Line {
     this.direction = HORIZONTAL
     this.endWidth = 1
     this.elbows = new Set()
-    this.lastElbow = null
-    this.insideVertex = false
+    this.endVertex = NOT_IN_VERTEX
   }
 
   update(du, dv) {
     const {elbows, vertices} = this
 
-    if (this.direction === MIDDLE) {
-      if (Math.abs(du) > Math.abs(dv)) {
-        this.direction = HORIZONTAL
-        this.insideVertex = false
-      } else {
-        this.direction = VERTICAL
-        this.insideVertex = false
-      }
-      this.elbows.addArray(this.lastElbow)
-    }
+    // if (this.direction === MIDDLE) {
+    //   if (Math.abs(du) > Math.abs(dv)) {
+    //     this.direction = HORIZONTAL
+    //   } else {
+    //     this.direction = VERTICAL
+    //   }
+    // }
 
     if (this.direction === HORIZONTAL) {
       this.endU += du
@@ -41,19 +38,27 @@ export default class Line {
       this.endV += dv
     }
 
-    // TODO optimize for speed
-    vertices.forEach(v => {
-      if (v.pointInSurroundingRegion(this.endU, this.endV) && !this.insideVertex) {
-        this.insideVertex = true
-        this.direction = MIDDLE
+    this.checkIfInVertex()
+  }
 
-        if (elbows.hasArray([v.u, v.v])) {
-          elbows.deleteArray([v.u, v.v])
-        } else {
-          this.lastElbow = [v.u, v.v]
+  checkIfInVertex() {
+    const { vertices, elbows } = this
+
+    if (this.endVertex === NOT_IN_VERTEX) {
+      vertices.forEach(vertex => {
+        if (vertex.pointInside(this.endU, this.endV)) {
+          if (elbows.has(vertex)) {
+            elbows.delete(vertex)
+            this.endVertex = vertex
+          } else {
+            this.endVertex = vertex
+            elbows.add(this.endVertex)
+          }
         }
-      }
-    })
+      })
+    } else if (!this.endVertex.pointInside(this.endU, this.endV)) {
+      this.endVertex = NOT_IN_VERTEX
+    }
   }
 
   reset() {
@@ -76,7 +81,7 @@ export default class Line {
     ctx.lineCap = "round"
     ctx.lineJoin = "round"
     ctx.moveTo(startU, startV)
-    elbows.forEachArray(([u,v]) => ctx.lineTo(u,v))
+    elbows.forEach(e => ctx.lineTo(e.u,e.v))
     ctx.lineTo(endU,endV)
     ctx.lineWidth = 15;
     ctx.stroke()

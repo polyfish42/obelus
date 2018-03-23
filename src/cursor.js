@@ -27,7 +27,6 @@ export default class Cursor {
     if (document.pointerLockElement === canvas ||
       document.mozPointerLockElement === canvas) {
         document.exitPointerLock()
-        debugger
         line.reset()
       } else {
         canvas.requestPointerLock()
