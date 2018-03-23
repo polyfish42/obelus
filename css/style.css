@@ -1,0 +1,11 @@
+#viewport {
+  position: relative;
+}
+
+#myCanvas {
+  position: absolute;
+}
+
+#backgroundCanvas {
+  position: absolute;
+}
