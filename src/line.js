@@ -5,9 +5,11 @@ const VERTICAL = "VERTICAL"
 const MIDDLE = "MIDDLE"
 
 export default class Line {
-  constructor(endU, endV, vertices) {
-    this.endU = endU
-    this.endV = endV
+  constructor(u, v, vertices) {
+    this.startU = u
+    this.startV = v
+    this.endU = u
+    this.endV = v
     this.vertices = vertices
     this.direction = HORIZONTAL
     this.endWidth = 1
@@ -54,6 +56,12 @@ export default class Line {
     })
   }
 
+  reset() {
+    this.elbows.clear()
+    this.endU = this.startU
+    this.endV = this.startV
+  }
+
   drawEnd(ctx) {
     const { endU, endV, endWidth } = this
 
@@ -63,11 +71,11 @@ export default class Line {
   }
 
   draw(ctx) {
-    const { endU, endV, elbows} = this
+    const { startU, startV, endU, endV, elbows} = this
     ctx.beginPath()
     ctx.lineCap = "round"
     ctx.lineJoin = "round"
-    ctx.moveTo(25, 215)
+    ctx.moveTo(startU, startV)
     elbows.forEachArray(([u,v]) => ctx.lineTo(u,v))
     ctx.lineTo(endU,endV)
     ctx.lineWidth = 15;
