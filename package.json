@@ -1,0 +1,27 @@
+{
+  "name": "the-witness-puzzle-game",
+  "version": "1.0.0",
+  "description": "# MVP",
+  "private": true,
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polyfish42/the-witness-puzzle-game.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/polyfish42/the-witness-puzzle-game/issues"
+  },
+  "homepage": "https://github.com/polyfish42/the-witness-puzzle-game#readme",
+  "devDependencies": {
+    "webpack": "^4.2.0",
+    "webpack-cli": "^2.0.13"
+  }
+}
