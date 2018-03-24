@@ -39,68 +39,119 @@ export default class Line {
     let distanceFromEnd;
     let closestVertex;
 
-    if (this.onEdge.direction === S) {
-      distanceFromStart = Math.abs(this.endU - startVertex.u)
-      distanceFromEnd = Math.abs(this.endU - endVertex.u)
-    } else {
-      distanceFromStart = Math.abs(this.endV - startVertex.v)
-      distanceFromEnd = Math.abs(this.endV - endVertex.v)
-    }
-    if (distanceFromStart < distanceFromEnd) {
-      closestVertex = startVertex
-    } else {
-      closestVertex = endVertex
-    }
-
-    // need to figure out borders
-    if (distanceFromStart === 0 || distanceFromEnd === 0) {
-      this.elbows.add(closestVertex)
-      switch (direction) {
-        case UP:
-          this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),W]]
-          break;
-        case RIGHT:
-          this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),S]]
-          break;
-        case DOWN:
-          this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV)+1,W]]
-          break;
-        case LEFT:
-          this.onEdge = this.edges[[this.coordinate(this.endU)-1,this.coordinate(this.endV),S]]
-          break;
+    let i = 0
+    while (i < 50) {
+      if (this.onEdge.direction === S) {
+        distanceFromStart = Math.abs(this.endU - startVertex.u)
+        distanceFromEnd = Math.abs(this.endU - endVertex.u)
+      } else {
+        distanceFromStart = Math.abs(this.endV - startVertex.v)
+        distanceFromEnd = Math.abs(this.endV - endVertex.v)
       }
-      this.startVertex = vertices[this.onEdge.endPoints[0]]
-      this.endVertex = vertices[this.onEdge.endPoints[1]]
-    }
+      if (distanceFromStart < distanceFromEnd) {
+        closestVertex = startVertex
+      } else {
+        closestVertex = endVertex
+      }
 
-    if (this.onEdge.direction === S) {
-      if (closestVertex === startVertex) {
-        if (direction === UP || direction === LEFT || direction === DOWN) {
-          this.endU -= magnitude
+      if (distanceFromStart === 0 || distanceFromEnd === 0) {
+        this.elbows.add(closestVertex)
+        switch (direction) {
+          case UP:
+            this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),W]]
+            break;
+          case RIGHT:
+            this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),S]]
+            break;
+          case DOWN:
+            this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV)+1,W]]
+            break;
+          case LEFT:
+            this.onEdge = this.edges[[this.coordinate(this.endU)-1,this.coordinate(this.endV),S]]
+            break;
+        }
+        this.startVertex = vertices[this.onEdge.endPoints[0]]
+        this.endVertex = vertices[this.onEdge.endPoints[1]]
+      }
+
+      if (this.onEdge.direction === S) {
+        if (closestVertex === startVertex) {
+          if (direction === UP || direction === LEFT || direction === DOWN) {
+            if (distanceFromStart > magnitude) {
+              this.endU -= magnitude
+              break
+            } else {
+              magnitude -= distanceFromStart
+              this.endU -= distanceFromStart
+            }
+          } else {
+            if (distanceFromEnd > magnitude) {
+              this.endU += magnitude
+              break
+            } else {
+              magnitude -= distanceFromEnd
+              this.endU += distanceFromEnd
+            }
+          }
         } else {
-          this.endU += magnitude
+          if (direction === UP || direction === RIGHT || direction === DOWN) {
+            if (distanceFromEnd > magnitude) {
+              this.endU += magnitude
+              break
+            } else {
+              magnitude -= distanceFromEnd
+              this.endU += distanceFromEnd
+            }
+          } else {
+            if (distanceFromStart > magnitude) {
+              this.endU -= magnitude
+              break
+            } else {
+              magnitude -= distanceFromStart
+              this.endU -= distanceFromStart
+            }
+          }
         }
       } else {
-        if (direction === UP || direction === RIGHT || direction === DOWN) {
-          this.endU += magnitude
+        if (closestVertex === startVertex) {
+          if (direction === LEFT || direction === RIGHT || direction === UP) {
+            if (distanceFromStart > magnitude) {
+              this.endV -= magnitude
+              break
+            } else {
+              magnitude -= distanceFromStart
+              this.endV -= distanceFromStart
+            }
+          } else {
+            if (distanceFromEnd > magnitude) {
+              this.endV += magnitude
+              break
+            } else {
+              magnitude -= distanceFromEnd
+              this.endV += distanceFromEnd
+            }
+          }
         } else {
-          this.endU -= magnitude
+          if (direction === LEFT || direction === RIGHT || direction === DOWN) {
+            if (distanceFromEnd > magnitude) {
+              this.endV += magnitude
+              break
+            } else {
+              magnitude -= distanceFromEnd
+              this.endV += distanceFromEnd
+            }
+          } else {
+            if (distanceFromStart > magnitude) {
+              this.endV -= magnitude
+              break
+            } else {
+              magnitude -= distanceFromStart
+              this.endV -= distanceFromStart
+            }
+          }
         }
       }
-    } else {
-      if (closestVertex === startVertex) {
-        if (direction === LEFT || direction === RIGHT || direction === UP) {
-          this.endV -= magnitude
-        } else {
-          this.endV += magnitude
-        }
-      } else {
-        if (direction === LEFT || direction === RIGHT || direction === DOWN) {
-          this.endV += magnitude
-        } else {
-          this.endV -= magnitude
-        }
-      }
+      i++
     }
   }
 
