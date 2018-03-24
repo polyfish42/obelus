@@ -7,8 +7,8 @@ const ctx = canvas.getContext("2d")
 const backgroundCanvas = document.getElementById("backgroundCanvas")
 const backgroundCtx= backgroundCanvas.getContext("2d")
 
-const puzzle = new Puzzle(3,3)
-const line = new Line(25, 215, puzzle.vertices)
+const puzzle = new Puzzle(4,4)
+const line = new Line(15, 15, puzzle.vertices, puzzle.edges)
 const cursor = new Cursor(canvas,line)
 
 function drawFrame() {

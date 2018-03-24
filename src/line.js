@@ -1,64 +1,139 @@
-import * as ArraySet from './util/array_set'
+import { W, S } from './coordinate_system'
 
 const HORIZONTAL = "HORIZONTAL"
 const VERTICAL = "VERTICAL"
 const MIDDLE = "MIDDLE"
+const UP = "UP"
+const RIGHT = "RIGHT"
+const DOWN = "DOWN"
+const LEFT = "LEFT"
 const NOT_IN_VERTEX = "NOT_IN_VERTEX"
 
 export default class Line {
-  constructor(u, v, vertices) {
+  constructor(u, v, vertices, edges) {
     this.startU = u
     this.startV = v
     this.endU = u
     this.endV = v
     this.vertices = vertices
+    this.edges = edges
+    this.onEdge = edges[[0,0,S]]
+    this.startVertex = vertices[this.onEdge.endPoints[0]]
+    this.endVertex = vertices[this.onEdge.endPoints[1]]
     this.direction = HORIZONTAL
     this.endWidth = 1
     this.elbows = new Set()
-    this.endVertex = NOT_IN_VERTEX
   }
 
   update(du, dv) {
-    const {elbows, vertices} = this
-
-    // if (this.direction === MIDDLE) {
-    //   if (Math.abs(du) > Math.abs(dv)) {
-    //     this.direction = HORIZONTAL
-    //   } else {
-    //     this.direction = VERTICAL
-    //   }
-    // }
-
-    if (this.direction === HORIZONTAL) {
-      this.endU += du
-    } else if (this.direction === VERTICAL) {
-      this.endV += dv
-    } else {
-      this.endU += du
-      this.endV += dv
+    if (du === 0 && dv === 0) {
+      return null
     }
 
-    this.checkIfInVertex()
+    const {elbows, vertices, edges, startVertex, endVertex} = this
+    const angle = Math.atan2(dv,du)*(180/Math.PI)
+    const direction = this.angle(du, dv)
+
+    let magnitude = Math.sqrt(du * du + dv * dv)
+    let distanceFromStart;
+    let distanceFromEnd;
+    let closestVertex;
+
+    if (this.onEdge.direction === S) {
+      distanceFromStart = Math.abs(this.endU - startVertex.u)
+      distanceFromEnd = Math.abs(this.endU - endVertex.u)
+    } else {
+      distanceFromStart = Math.abs(this.endV - startVertex.v)
+      distanceFromEnd = Math.abs(this.endV - endVertex.v)
+    }
+    if (distanceFromStart < distanceFromEnd) {
+      closestVertex = startVertex
+    } else {
+      closestVertex = endVertex
+    }
+
+    // need to figure out borders
+    if (distanceFromStart === 0 || distanceFromEnd === 0) {
+      this.elbows.add(closestVertex)
+      switch (direction) {
+        case UP:
+          this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),W]]
+          break;
+        case RIGHT:
+          this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),S]]
+          break;
+        case DOWN:
+          this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV)+1,W]]
+          break;
+        case LEFT:
+          this.onEdge = this.edges[[this.coordinate(this.endU)-1,this.coordinate(this.endV),S]]
+          break;
+      }
+      this.startVertex = vertices[this.onEdge.endPoints[0]]
+      this.endVertex = vertices[this.onEdge.endPoints[1]]
+    }
+
+    if (this.onEdge.direction === S) {
+      if (closestVertex === startVertex) {
+        if (direction === UP || direction === LEFT || direction === DOWN) {
+          this.endU -= magnitude
+        } else {
+          this.endU += magnitude
+        }
+      } else {
+        if (direction === UP || direction === RIGHT || direction === DOWN) {
+          this.endU += magnitude
+        } else {
+          this.endU -= magnitude
+        }
+      }
+    } else {
+      if (closestVertex === startVertex) {
+        if (direction === LEFT || direction === RIGHT || direction === UP) {
+          this.endV -= magnitude
+        } else {
+          this.endV += magnitude
+        }
+      } else {
+        if (direction === LEFT || direction === RIGHT || direction === DOWN) {
+          this.endV += magnitude
+        } else {
+          this.endV -= magnitude
+        }
+      }
+    }
   }
 
-  checkIfInVertex() {
-    const { vertices, elbows } = this
-
-    if (this.endVertex === NOT_IN_VERTEX) {
-      vertices.forEach(vertex => {
-        if (vertex.pointInside(this.endU, this.endV)) {
-          if (elbows.has(vertex)) {
-            elbows.delete(vertex)
-            this.endVertex = vertex
-          } else {
-            this.endVertex = vertex
-            elbows.add(this.endVertex)
-          }
-        }
-      })
-    } else if (!this.endVertex.pointInside(this.endU, this.endV)) {
-      this.endVertex = NOT_IN_VERTEX
+  angle(du, dv) {
+    if (du > 0 && dv > 0) {
+      if (du > dv) {
+        return RIGHT
+      } else {
+        return DOWN
+      }
+    } else if (du > 0) {
+      if (du > 0 - dv) {
+        return RIGHT
+      } else {
+        return UP
+      }
+    } else if (dv > 0) {
+      if (0 - du > dv) {
+        return LEFT
+      } else {
+        return DOWN
+      }
+    } else {
+      if (0 - du > 0 - dv) {
+        return LEFT
+      } else {
+        return UP
+      }
     }
+  }
+
+  coordinate(position) {
+    return Math.floor(position / 200)
   }
 
   reset() {

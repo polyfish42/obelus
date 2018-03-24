@@ -25,9 +25,13 @@ export class Edge {
     this.length = this.size/10
 
     if (annotation === W) {
+      this.direction = W
+      this.endPoints = [[u, v + 1],[u, v]]
       this.u = u * this.size + this.lineWidth/13
       this.v = v * this.size + this.size/2
     } else if (annotation === S) {
+      this.direction = S
+      this.endPoints = [[u, v], [u + 1, v]]
       this.u = u * this.size + this.size/2
       this.v = v * this.size + this.size + this.lineWidth/13
     }
@@ -45,30 +49,16 @@ export class Vertex {
   constructor(u, v) {
     this.size = 200
     this.lineWidth = 60
+    this.protrudes = [[u,v,W], [u,v,S], [u,v-1,W],[u-1,v,S]]
     this.u = u * this.size + this.lineWidth/4
-    this.v = v * this.size + this.size + this.lineWidth/4
-    this.elbowPlaced = false
+    this.v = v * this.size + this.lineWidth/4
   }
 
   pointInside(u,v) {
-    if (u > this.u - 15 && u < this.u + 15 && v > this.v - 15 && v < this.v + 15) {
+    if (u > this.u - 1 && u < this.u + 1 && v > this.v - 1 && v < this.v + 1) {
       return true
     }
     return false
-  }
-
-  isElbowPlaced() {
-    return this.elbowPlaced
-  }
-
-  placeElbow(){
-    this.elbowPlaced = true
-    return [this.u, this.v]
-  }
-
-  removeElbow(){
-    this.elbowPlaced = false
-    return [this.u, this.v]
   }
 
   draw(ctx) {
