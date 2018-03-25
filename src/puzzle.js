@@ -24,12 +24,12 @@ export default class Puzzle {
 
     for (var u = 0; u < width; u++) {
       vertices[[u, v]] = new Vertex(u, v)
-      edges[[u, -1, N]] = new Edge(u, -1, N)
+      edges[[u, height, N]] = new Edge(u, height, N)
     }
 
     for (var v = 0; v < height; v++) {
       vertices[[u, v]] = new Vertex(width, v)
-      edges[[width, v, W]] = new Edge(width, v, W)
+      edges[[width, v , W]] = new Edge(width, v, W)
     }
 
     vertices[[width, height]] = new Vertex(width, height)

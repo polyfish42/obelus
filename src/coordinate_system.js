@@ -47,6 +47,8 @@ export class Edge {
     ctx.rect(this.u, this.v, this.length, this.length)
     ctx.font = "12px Arial"
     ctx.fillText(this.fillText, this.u, this.v)
+    ctx.fillStyle = "red"
+    ctx.fill()
     ctx.stroke()
     ctx.closePath()
   }

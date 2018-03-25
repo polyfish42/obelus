@@ -22,7 +22,6 @@ export default class Line {
     this.endVertex = vertices[[1,0]]
     this.blockLeftUp = false
     this.blockRightDown = false
-    // this.direction = HORIZONTAL
     this.endWidth = 10
     this.elbows = new Set()
   }
@@ -37,6 +36,10 @@ export default class Line {
     const direction = this.angle(du, dv)
 
     let magnitude = Math.sqrt(du * du + dv * dv) * 1.3
+    if (magnitude > 100) {
+      magnitude = 100
+    }
+    let nextEdge;
     let distanceFromStart;
     let distanceFromEnd;
     let closestVertex;
@@ -89,20 +92,23 @@ export default class Line {
 
         switch (direction) {
           case UP:
-            this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV)-1,W]]
+            nextEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV)-1,W]]
             break;
           case RIGHT:
-            this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),N]]
+            nextEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),N]]
             break;
           case DOWN:
-            this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),W]]
+            nextEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),W]]
             break;
           case LEFT:
-            this.onEdge = this.edges[[this.coordinate(this.endU)-1,this.coordinate(this.endV),N]]
+            nextEdge = this.edges[[this.coordinate(this.endU)-1,this.coordinate(this.endV),N]]
             break;
         }
-        this.startVertex = vertices[this.onEdge.endPoints[0]]
-        this.endVertex = vertices[this.onEdge.endPoints[1]]
+        if (nextEdge) {
+          this.onEdge = nextEdge
+          this.startVertex = vertices[this.onEdge.endPoints[0]]
+          this.endVertex = vertices[this.onEdge.endPoints[1]]
+        }
       }
 
       if (this.onEdge.direction === N) {
