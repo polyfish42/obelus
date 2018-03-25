@@ -20,7 +20,9 @@ export default class Line {
     this.onEdge = new Edge(0, 0, N)
     this.startVertex = vertices[[0,0]]
     this.endVertex = vertices[[1,0]]
-    this.direction = HORIZONTAL
+    this.blockLeftUp = false
+    this.blockRightDown = false
+    // this.direction = HORIZONTAL
     this.endWidth = 10
     this.elbows = new Set()
   }
@@ -59,6 +61,21 @@ export default class Line {
         this.onEdge.lineThrough = false
       }
 
+      if (elbows.has(this.startVertex) && elbows.has(this.endVertex) && this.onEdge.lineThrough === false) {
+        let lastVertex = Array.from(this.elbows)[this.elbows.size - 1]
+
+        if (this.startVertex === lastVertex) {
+          this.blockRightDown = true
+          this.blockLeftUp = false
+        } else {
+          this.blockLeftUp = true
+          this.blockRightDown = false
+        }
+      } else {
+        this.blockLeftUp = false
+        this.blockRightDown = false
+      }
+
 
       if (distanceFromStart === 0 || distanceFromEnd === 0) {
         this.elbows.add(closestVertex)
@@ -91,7 +108,10 @@ export default class Line {
       if (this.onEdge.direction === N) {
         if (closestVertex === startVertex) {
           if (direction === UP || direction === LEFT || direction === DOWN) {
-            if (distanceFromStart > magnitude) {
+            if (this.blockLeftUp === true && magnitude > distanceFromStart - 30) {
+              this.endU -= distanceFromStart - 30
+              break
+            } else if (distanceFromStart > magnitude) {
               this.endU -= magnitude
               break
             } else {
@@ -109,7 +129,10 @@ export default class Line {
           }
         } else {
           if (direction === UP || direction === RIGHT || direction === DOWN) {
-            if (distanceFromEnd > magnitude) {
+            if (this.blockRightDown === true && magnitude > distanceFromEnd - 30) {
+              this.endU += distanceFromEnd - 30
+              break
+            } else if (distanceFromEnd > magnitude) {
               this.endU += magnitude
               break
             } else {
@@ -129,7 +152,10 @@ export default class Line {
       } else {
         if (closestVertex === startVertex) {
           if (direction === LEFT || direction === RIGHT || direction === UP) {
-            if (distanceFromStart > magnitude) {
+            if (this.blockLeftUp === true && magnitude > distanceFromStart - 30) {
+              this.endV -= distanceFromStart - 30
+              break
+            } else if (distanceFromStart > magnitude) {
               this.endV -= magnitude
               break
             } else {
@@ -147,7 +173,10 @@ export default class Line {
           }
         } else {
           if (direction === LEFT || direction === RIGHT || direction === DOWN) {
-            if (distanceFromEnd > magnitude) {
+            if (this.blockRightDown === true && magnitude > distanceFromEnd - 30) {
+              this.endV += distanceFromEnd - 30
+              break
+            } else if (distanceFromEnd > magnitude) {
               this.endV += magnitude
               break
             } else {
