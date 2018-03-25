@@ -1,4 +1,4 @@
-import { Face, Edge, Vertex, W, S } from './coordinate_system'
+import { Face, Edge, Vertex, W, N } from './coordinate_system'
 
 export default class Puzzle {
   constructor(width, height) {
@@ -18,13 +18,13 @@ export default class Puzzle {
         faces[[u, v]] = new Face(u, v)
         vertices[[u, v]] = new Vertex(u, v)
         edges[[u, v, W]] = new Edge(u, v, W)
-        edges[[u, v, S]] = new Edge(u, v, S)
+        edges[[u, v, N]] = new Edge(u, v, N)
       }
     }
 
     for (var u = 0; u < width; u++) {
       vertices[[u, v]] = new Vertex(u, v)
-      edges[[u, -1, S]] = new Edge(u, -1, S)
+      edges[[u, -1, N]] = new Edge(u, -1, N)
     }
 
     for (var v = 0; v < height; v++) {
@@ -37,7 +37,7 @@ export default class Puzzle {
 
   draw(ctx) {
     Object.values(this.faces).forEach(f => f.draw(ctx))
-    Object.values(this.vertices).forEach(v => v.draw(ctx))
-    Object.values(this.edges).forEach(e => e.draw(ctx))
+    // Object.values(this.vertices).forEach(v => v.draw(ctx))
+    // Object.values(this.edges).forEach(e => e.draw(ctx))
   }
 }

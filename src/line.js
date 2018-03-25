@@ -1,4 +1,4 @@
-import { W, S } from './coordinate_system'
+import { W, N, Edge } from './coordinate_system'
 
 const HORIZONTAL = "HORIZONTAL"
 const VERTICAL = "VERTICAL"
@@ -17,9 +17,9 @@ export default class Line {
     this.endV = v
     this.vertices = vertices
     this.edges = edges
-    this.onEdge = edges[[0,0,S]]
-    this.startVertex = vertices[this.onEdge.endPoints[0]]
-    this.endVertex = vertices[this.onEdge.endPoints[1]]
+    this.onEdge = new Edge(0, 0, N)
+    this.startVertex = vertices[[0,0]]
+    this.endVertex = vertices[[1,0]]
     this.direction = HORIZONTAL
     this.endWidth = 1
     this.elbows = new Set()
@@ -34,47 +34,59 @@ export default class Line {
     const angle = Math.atan2(dv,du)*(180/Math.PI)
     const direction = this.angle(du, dv)
 
-    let magnitude = Math.sqrt(du * du + dv * dv)
+    let magnitude = Math.sqrt(du * du + dv * dv) * 1.3
     let distanceFromStart;
     let distanceFromEnd;
     let closestVertex;
 
     let i = 0
     while (i < 50) {
-      if (this.onEdge.direction === S) {
-        distanceFromStart = Math.abs(this.endU - startVertex.u)
-        distanceFromEnd = Math.abs(this.endU - endVertex.u)
+      if (this.onEdge.direction === N) {
+        distanceFromStart = Math.abs(this.endU - this.startVertex.u)
+        distanceFromEnd = Math.abs(this.endU - this.endVertex.u)
       } else {
-        distanceFromStart = Math.abs(this.endV - startVertex.v)
-        distanceFromEnd = Math.abs(this.endV - endVertex.v)
+        distanceFromStart = Math.abs(this.endV - this.startVertex.v)
+        distanceFromEnd = Math.abs(this.endV - this.endVertex.v)
       }
       if (distanceFromStart < distanceFromEnd) {
-        closestVertex = startVertex
+        closestVertex = this.startVertex
       } else {
-        closestVertex = endVertex
+        closestVertex = this.endVertex
       }
 
+      if (distanceFromEnd === distanceFromStart) {
+        // debugger
+      }
+
+      // console.log(`start distance: ${distanceFromStart} end distance: ${distanceFromEnd} start < end${distanceFromStart < distanceFromEnd}`);
+      // if (distanceFromEnd <= 20 && distanceFromEnd > 0 && this.elbows.has(endVertex) && endVertex === Array.from(this.elbows).pop()) {
+      //   this.elbows.delete(endVertex)
+      // }
+      //
+      // if (distanceFromEnd <= 20 && distanceFromEnd > 0 && this.elbows.has(endVertex)) {
+      //   magnitude = 0
+      // }
       if (distanceFromStart === 0 || distanceFromEnd === 0) {
-        this.elbows.add(closestVertex)
+          this.elbows.add(closestVertex)
         switch (direction) {
           case UP:
-            this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),W]]
+            this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV)-1,W]]
             break;
           case RIGHT:
-            this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),S]]
+            this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),N]]
             break;
           case DOWN:
-            this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV)+1,W]]
+            this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),W]]
             break;
           case LEFT:
-            this.onEdge = this.edges[[this.coordinate(this.endU)-1,this.coordinate(this.endV),S]]
+            this.onEdge = this.edges[[this.coordinate(this.endU)-1,this.coordinate(this.endV),N]]
             break;
         }
         this.startVertex = vertices[this.onEdge.endPoints[0]]
         this.endVertex = vertices[this.onEdge.endPoints[1]]
       }
 
-      if (this.onEdge.direction === S) {
+      if (this.onEdge.direction === N) {
         if (closestVertex === startVertex) {
           if (direction === UP || direction === LEFT || direction === DOWN) {
             if (distanceFromStart > magnitude) {
@@ -209,7 +221,8 @@ export default class Line {
     ctx.moveTo(startU, startV)
     elbows.forEach(e => ctx.lineTo(e.u,e.v))
     ctx.lineTo(endU,endV)
-    ctx.lineWidth = 15;
+    ctx.lineWidth = 30;
+    ctx.strokeStyle = "#90A7D3"
     ctx.stroke()
     ctx.lineWidth = 1;
     this.drawEnd(ctx)
