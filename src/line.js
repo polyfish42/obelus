@@ -11,15 +11,15 @@ const NOT_IN_VERTEX = "NOT_IN_VERTEX"
 
 export default class Line {
   constructor(u, v, vertices, edges) {
-    this.startU = u
-    this.startV = v
-    this.endU = u
-    this.endV = v
+    this.startU = u * 200 + 15
+    this.startV = v * 200 + 15
+    this.endU = u * 200 + 15
+    this.endV = v * 200 + 15
     this.vertices = vertices
     this.edges = edges
-    this.onEdge = new Edge(0, 0, N)
-    this.startVertex = vertices[[0,0]]
-    this.endVertex = vertices[[1,0]]
+    this.onEdge = new Edge(u, v, N)
+    this.startVertex = vertices[this.onEdge.endPoints[0]]
+    this.endVertex = vertices[this.onEdge.endPoints[1]]
     this.blockLeftUp = false
     this.blockRightDown = false
     this.endWidth = 10
@@ -247,7 +247,7 @@ export default class Line {
 
     ctx.beginPath()
     ctx.arc(endU, endV, endWidth, 0, Math.PI * 2)
-    ctx.fillStyle = "red"
+    ctx.fillStyle = "white"
     ctx.fill()
   }
 
@@ -256,6 +256,7 @@ export default class Line {
     ctx.beginPath()
     ctx.lineCap = "round"
     ctx.lineJoin = "round"
+    ctx.arc(startU, startV,10,0,Math.PI*2)
     ctx.moveTo(startU, startV)
     elbows.forEach(e => ctx.lineTo(e.u,e.v))
     ctx.lineTo(endU,endV)
