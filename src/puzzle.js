@@ -1,4 +1,4 @@
-import { Face, Edge, Vertex, W, N } from './coordinate_system'
+import { Face, Edge, Vertex, W, N, BLACK_SQUARE, WHITE_SQUARE } from './coordinate_system'
 
 export default class Puzzle {
   constructor(width, height) {

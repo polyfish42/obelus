@@ -1,5 +1,8 @@
 export const W = "W"
 export const N = "N"
+export const EMPTY = "EMPTY"
+export const BLACK_SQUARE = "BLACK_SQUARE"
+export const WHITE_SQUARE = "WHITE_SQUARE"
 
 export class Face {
   constructor(u, v) {
@@ -7,8 +10,32 @@ export class Face {
     this.lineWidth = 60
     this.length = this.size - this.lineWidth/2
     this.fillText = `${u}, ${v}`
+    this.inside = EMPTY
     this.u = u * this.size + this.lineWidth/2
     this.v = v * this.size + this.lineWidth/2
+  }
+
+  setInside(symbol) {
+    this.inside = symbol
+  }
+
+  drawSymbol(ctx) {
+    switch (this.inside) {
+      case BLACK_SQUARE:
+        ctx.beginPath()
+        roundRect(ctx, this.u + 40, this.v + 40, this.length - 80, this.length - 80, 30)
+        ctx.fillStyle = "black"
+        ctx.fill()
+        ctx.closePath()
+        break;
+      case WHITE_SQUARE:
+        ctx.beginPath()
+        roundRect(ctx, this.u + 40, this.v + 40, this.length - 80, this.length - 80, 30)
+        ctx.fillStyle = "white"
+        ctx.fill()
+        ctx.closePath()
+        break;
+    }
   }
 
   draw(ctx) {
@@ -18,6 +45,7 @@ export class Face {
     ctx.fill()
     // ctx.fillText(this.fillText, this.u + 100,this.v + 100)
     ctx.closePath()
+    this.drawSymbol(ctx)
   }
 }
 
@@ -78,4 +106,39 @@ export class Vertex {
     ctx.stroke()
     ctx.closePath()
   }
+}
+
+function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+  if (typeof stroke == 'undefined') {
+    stroke = true;
+  }
+  if (typeof radius === 'undefined') {
+    radius = 5;
+  }
+  if (typeof radius === 'number') {
+    radius = {tl: radius, tr: radius, br: radius, bl: radius};
+  } else {
+    var defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0};
+    for (var side in defaultRadius) {
+      radius[side] = radius[side] || defaultRadius[side];
+    }
+  }
+  ctx.beginPath();
+  ctx.moveTo(x + radius.tl, y);
+  ctx.lineTo(x + width - radius.tr, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+  ctx.lineTo(x + width, y + height - radius.br);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
+  ctx.lineTo(x + radius.bl, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+  ctx.lineTo(x, y + radius.tl);
+  ctx.quadraticCurveTo(x, y, x + radius.tl, y);
+  ctx.closePath();
+  if (fill) {
+    ctx.fill();
+  }
+  if (stroke) {
+    ctx.stroke();
+  }
+
 }
