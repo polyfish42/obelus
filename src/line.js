@@ -21,7 +21,7 @@ export default class Line {
     this.startVertex = vertices[[0,0]]
     this.endVertex = vertices[[1,0]]
     this.direction = HORIZONTAL
-    this.endWidth = 1
+    this.endWidth = 10
     this.elbows = new Set()
   }
 
@@ -54,20 +54,22 @@ export default class Line {
         closestVertex = this.endVertex
       }
 
-      if (distanceFromEnd === distanceFromStart) {
-        // debugger
+      if (elbows.has(this.startVertex) && elbows.has(this.endVertex) && this.onEdge.lineThrough === true) {
+        this.elbows.delete(closestVertex)
+        this.onEdge.lineThrough = false
       }
 
-      // console.log(`start distance: ${distanceFromStart} end distance: ${distanceFromEnd} start < end${distanceFromStart < distanceFromEnd}`);
-      // if (distanceFromEnd <= 20 && distanceFromEnd > 0 && this.elbows.has(endVertex) && endVertex === Array.from(this.elbows).pop()) {
-      //   this.elbows.delete(endVertex)
-      // }
-      //
-      // if (distanceFromEnd <= 20 && distanceFromEnd > 0 && this.elbows.has(endVertex)) {
-      //   magnitude = 0
-      // }
+
       if (distanceFromStart === 0 || distanceFromEnd === 0) {
-          this.elbows.add(closestVertex)
+        this.elbows.add(closestVertex)
+
+        let lastVertex = Array.from(this.elbows)[this.elbows.size - 1]
+        let secondLastVertex = Array.from(this.elbows)[this.elbows.size - 2]
+
+        if (lastVertex && secondLastVertex && ((lastVertex === this.startVertex && secondLastVertex === this.endVertex) || (lastVertex === this.endVertex && secondLastVertex === this.startVertex))) {
+          this.onEdge.lineThrough = true
+        }
+
         switch (direction) {
           case UP:
             this.onEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV)-1,W]]
@@ -210,7 +212,8 @@ export default class Line {
 
     ctx.beginPath()
     ctx.arc(endU, endV, endWidth, 0, Math.PI * 2)
-    ctx.stroke()
+    ctx.fillStyle = "red"
+    ctx.fill()
   }
 
   draw(ctx) {

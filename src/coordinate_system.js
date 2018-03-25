@@ -27,6 +27,7 @@ export class Edge {
     this.lineWidth = 60
     this.length = this.size/10
     this.fillText = `${u},${v},${annotation}`
+    this.lineThrough = false
 
     if (annotation === W) {
       this.direction = W
