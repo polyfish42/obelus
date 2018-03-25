@@ -1,4 +1,4 @@
-import { W, N, Edge } from './coordinate_system'
+import { W, N, END, Edge } from './coordinate_system'
 
 const HORIZONTAL = "HORIZONTAL"
 const VERTICAL = "VERTICAL"
@@ -11,19 +11,25 @@ const NOT_IN_VERTEX = "NOT_IN_VERTEX"
 
 export default class Line {
   constructor(u, v, vertices, edges) {
+    this.initU = u
+    this.initV = v
+    this.vertices = vertices
+    this.edges = edges
+    this.elbows = new Set()
+    this.endWidth = 10
+    this.init(u,v)
+  }
+
+  init(u, v) {
     this.startU = u * 200 + 15
     this.startV = v * 200 + 15
     this.endU = u * 200 + 15
     this.endV = v * 200 + 15
-    this.vertices = vertices
-    this.edges = edges
     this.onEdge = new Edge(u, v, N)
-    this.startVertex = vertices[this.onEdge.endPoints[0]]
-    this.endVertex = vertices[this.onEdge.endPoints[1]]
+    this.startVertex = this.vertices[[u,v]]
+    this.endVertex = this.vertices[this.onEdge.endPoints[1]]
     this.blockLeftUp = false
     this.blockRightDown = false
-    this.endWidth = 10
-    this.elbows = new Set()
   }
 
   update(du, dv) {
@@ -108,6 +114,15 @@ export default class Line {
           this.onEdge = nextEdge
           this.startVertex = vertices[this.onEdge.endPoints[0]]
           this.endVertex = vertices[this.onEdge.endPoints[1]]
+        }
+      }
+
+      // Handle the end piece
+      if (this.onEdge.type === END) {
+        if (this.startVertex.type === END) {
+          distanceFromStart = distanceFromStart - 160
+        } else {
+          distanceFromEnd = distanceFromEnd - 160
         }
       }
 
@@ -238,8 +253,7 @@ export default class Line {
 
   reset() {
     this.elbows.clear()
-    this.endU = this.startU
-    this.endV = this.startV
+    this.init(this.initU,this.initV)
   }
 
   drawEnd(ctx) {

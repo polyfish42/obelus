@@ -1,4 +1,4 @@
-import { Face, Edge, Vertex, W, N, BLACK_SQUARE, WHITE_SQUARE } from './coordinate_system'
+import { Face, Edge, Vertex, W, N, START, END, BLACK_SQUARE, WHITE_SQUARE } from './coordinate_system'
 
 export default class Puzzle {
   constructor(width, height) {
@@ -8,6 +8,27 @@ export default class Puzzle {
     this.edges = {}
     this.vertices = {}
     this.generatePuzzle()
+  }
+
+  setStart(coord) {
+    this.vertices[coord].type = START
+  }
+
+  setEnd(u,v, direction) {
+    const end = this.edges[[u, v, direction]] = new Edge(u, v, direction)
+
+    let vertex;
+    if (direction === N && u === this.width) {
+      vertex = this.vertices[[u + 1, v]] = new Vertex(u + 1, v)
+    } else if (direction === N) {
+      vertex = this.vertices[[u,v]] = new Vertex(u, v)
+    } else if (direction === W && v === this.height) {
+      vertex = this.vertices[[u, v + 1]] = new Vertex(u, v + 1)
+    } else if (direction === W) {
+      vertex = this.vertices[[u, v]] = new Vertex(u, v)
+    }
+    end.type = END
+    vertex.type = END
   }
 
   generatePuzzle() {
@@ -37,7 +58,7 @@ export default class Puzzle {
 
   draw(ctx) {
     Object.values(this.faces).forEach(f => f.draw(ctx))
-    // Object.values(this.vertices).forEach(v => v.draw(ctx))
+    Object.values(this.vertices).forEach(v => v.draw(ctx))
     Object.values(this.edges).forEach(e => e.draw(ctx))
   }
 }

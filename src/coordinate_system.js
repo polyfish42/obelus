@@ -1,5 +1,7 @@
 export const W = "W"
 export const N = "N"
+export const START = "START"
+export const END = "END"
 export const EMPTY = "EMPTY"
 export const BLACK_SQUARE = "BLACK_SQUARE"
 export const WHITE_SQUARE = "WHITE_SQUARE"
@@ -56,6 +58,7 @@ export class Edge {
     this.length = this.size/10
     this.fillText = `${u},${v},${annotation}`
     this.lineThrough = false
+    this.type = EMPTY
 
     if (annotation === W) {
       this.direction = W
@@ -68,6 +71,10 @@ export class Edge {
       this.u = u * this.size + this.size/2
       this.v = v * this.size + this.lineWidth/13
     }
+  }
+
+  setType(type) {
+    this.type = type
   }
 
   draw(ctx) {
@@ -89,6 +96,7 @@ export class Vertex {
     this.fillText = `${u},${v}`
     this.u = u * this.size + this.lineWidth/4
     this.v = v * this.size + this.lineWidth/4
+    this.type = EMPTY
   }
 
   pointInside(u,v) {
@@ -96,6 +104,10 @@ export class Vertex {
       return true
     }
     return false
+  }
+
+  setType(type) {
+    this.type = type
   }
 
   draw(ctx) {
