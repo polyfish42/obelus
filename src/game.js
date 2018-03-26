@@ -2,6 +2,7 @@ import Puzzle from './puzzle'
 import Line from './line'
 import Cursor from './cursor'
 import checkIfWon from './win_check'
+import puzzles from './puzzles'
 import { N, W, BLACK_SQUARE, WHITE_SQUARE } from './coordinate_system'
 
 let puzzleCtx;
@@ -55,6 +56,6 @@ export const isGameWon = () => {
   }
 }
 
-makePuzzle([0,1],[1,1,N],1,2,[])
+makePuzzle(...puzzles[9])
 
 setInterval(drawFrame, 10);
