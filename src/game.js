@@ -51,7 +51,7 @@ const drawFrame = () => {
     line.draw(lineCtx)
 }
 
-let level = 2
+let level = 6
 makePuzzle(...puzzles[level])
 
 export const isGameWon = () => {
