@@ -17,8 +17,8 @@ export default class Puzzle {
     this.generatePuzzle()
   }
 
-  setStart(coord) {
-    this.vertices[coord].type = START
+  setStart(u, v) {
+    this.vertices[[u, v]].type = START
   }
 
   setEnd(u,v, direction) {
@@ -104,7 +104,7 @@ export default class Puzzle {
     ctx.fillStyle = "#3A45CC"
     ctx.fill()
     ctx.beginPath()
-    roundRect(ctx,50,50,this.width * 210,this.height * 210, 25)
+    roundRect(ctx,50,50,this.width * 200 + 30,this.height * 200 + 30, 25)
     ctx.fillStyle = "#0F0E6F"
     ctx.fill()
     Object.values(this.faces).forEach(f => f.draw(ctx))

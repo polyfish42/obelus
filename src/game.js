@@ -4,19 +4,47 @@ import Cursor from './cursor'
 import checkIfWon from './win_check'
 import { N, W, BLACK_SQUARE, WHITE_SQUARE } from './coordinate_system'
 
-const canvas = document.getElementById("myCanvas");
-const ctx = canvas.getContext("2d")
-const backgroundCanvas = document.getElementById("backgroundCanvas")
-const backgroundCtx= backgroundCanvas.getContext("2d")
+let puzzleCtx;
+let lineCtx;
+let line;
+let puzzle;
+let cursor;
 
-const puzzle = new Puzzle(3,3)
-const line = new Line(0, 3, puzzle.vertices, puzzle.edges)
-const cursor = new Cursor(canvas,line)
+const sizeCanvases = (width, height) => {
+  const puzzleCanvas = document.getElementById("puzzleCanvas")
+  puzzleCanvas.setAttribute("style", `height:${height * 100 + 67.5}px; width: ${width * 100 + 67.5}px`)
+  puzzleCanvas.setAttribute("height", `${height * 200 + 135}px`)
+  puzzleCanvas.setAttribute("width", `${width * 200 + 135}px`)
 
+  const lineCanvas = document.getElementById("lineCanvas")
+  lineCanvas.setAttribute("style", `height:${height * 100 + 67.5}px; width: ${width * 100 + 67.5}px`)
+  lineCanvas.setAttribute("height", `${height * 200 + 135}px`)
+  lineCanvas.setAttribute("width", `${width * 200 + 135}px`)
+}
+
+const getCtx = (id) => {
+  return document.getElementById(id).getContext("2d")
+}
+
+const makePuzzle = (start, end, height, width, squares) => {
+  sizeCanvases(height, width)
+  puzzleCtx = getCtx("puzzleCanvas")
+  lineCtx = getCtx("lineCanvas")
+
+  puzzle = new Puzzle(height, width)
+  line = new Line(start[0], start[1], puzzle.vertices, puzzle.edges)
+  cursor = new Cursor(lineCanvas,line)
+
+  puzzle.setStart(...start)
+  puzzle.setEnd(...end)
+
+  squares.forEach(sq => puzzle.faces[sq[0]].inside = sq[1])
+  puzzle.draw(puzzleCtx)
+}
 
 const drawFrame = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    line.draw(ctx)
+    lineCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
+    line.draw(lineCtx)
 }
 
 export const isGameWon = () => {
@@ -27,17 +55,6 @@ export const isGameWon = () => {
   }
 }
 
-puzzle.setStart([0,3])
-puzzle.setEnd(-1,2,N)
-puzzle.faces[[0,0]].inside = BLACK_SQUARE
-puzzle.faces[[1,0]].inside = BLACK_SQUARE
-puzzle.faces[[2,0]].inside = BLACK_SQUARE
-puzzle.faces[[0,1]].inside = BLACK_SQUARE
-puzzle.faces[[2,1]].inside = BLACK_SQUARE
-puzzle.faces[[1,1]].inside = WHITE_SQUARE
-puzzle.faces[[0,2]].inside = WHITE_SQUARE
-puzzle.faces[[1,2]].inside = WHITE_SQUARE
-puzzle.faces[[2,2]].inside = WHITE_SQUARE
-puzzle.draw(backgroundCtx)
+makePuzzle([0,1],[1,1,N],1,2,[])
 
 setInterval(drawFrame, 10);

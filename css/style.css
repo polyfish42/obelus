@@ -1,21 +1,12 @@
-p {
-  padding-top: 400px;
-  width: 300px;
-  margin: 0 auto;
+body {
+  background-color: black;
 }
 
-#viewport {
+#puzzle {
   position: relative;
 }
 
-#myCanvas {
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: auto;
-}
-
-#backgroundCanvas {
+#puzzleCanvas, #lineCanvas {
   position: absolute;
   left: 0;
   right: 0;
