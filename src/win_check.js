@@ -82,10 +82,11 @@ const allSquaresWon = (line, puzzle) => {
 }
 
 const checkIfWon = (line, puzzle) => {
-  if (allSquaresWon(line, puzzle)) {
-    console.log("YOU win!");
+  if (line.atEnd === true && allSquaresWon(line, puzzle)) {
+    return true
   } else {
     line.reset()
+    return false
   }
 }
 

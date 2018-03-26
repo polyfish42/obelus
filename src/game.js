@@ -48,14 +48,16 @@ const drawFrame = () => {
     line.draw(lineCtx)
 }
 
+let level = 1
+makePuzzle(...puzzles[level])
+
 export const isGameWon = () => {
-  if (line.atEnd === true) {
-    checkIfWon(line, puzzle)
-  } else {
-    line.reset()
+  const isWon = checkIfWon(line, puzzle)
+
+  if (isWon) {
+    level++
+    makePuzzle(...puzzles[level])
   }
 }
-
-makePuzzle(...puzzles[9])
 
 setInterval(drawFrame, 10);
