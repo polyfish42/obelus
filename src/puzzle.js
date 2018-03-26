@@ -74,7 +74,6 @@ export default class Puzzle {
 
   drawEndNub(ctx) {
     ctx.beginPath()
-    // ctx.moveTo()
     ctx.moveTo(this.endNub.u,this.endNub.v)
     switch (this.endNubDirection) {
       case UP:
@@ -94,14 +93,14 @@ export default class Puzzle {
     }
     ctx.lineWidth = 30
     ctx.lineCap = "round"
-    ctx.strokeStyle = "#0F0E6F" 
+    ctx.strokeStyle = "#0F0E6F"
     ctx.stroke()
     ctx.closePath()
   }
 
   draw(ctx) {
     ctx.beginPath()
-    ctx.rect(0,0, (this.width) * 200 + 150, (this.height) * 200 + 150)
+    ctx.rect(0,0, (this.width) * 200 + 135, (this.height) * 200 + 135)
     ctx.fillStyle = "#3A45CC"
     ctx.fill()
     ctx.beginPath()

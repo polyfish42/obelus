@@ -289,7 +289,7 @@ export default class Line {
     ctx.lineWidth = 30;
 
     if (this.atEnd === true) {
-      ctx.strokeStyle = "red"
+      ctx.strokeStyle = "green"
     } else {
       ctx.strokeStyle = "#90A7D3"
     }

@@ -1,11 +1,23 @@
+p {
+  padding-top: 400px;
+  width: 300px;
+  margin: 0 auto;
+}
+
 #viewport {
   position: relative;
 }
 
 #myCanvas {
   position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
 #backgroundCanvas {
   position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
