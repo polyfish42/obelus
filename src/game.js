@@ -10,6 +10,7 @@ let lineCtx;
 let line;
 let puzzle;
 let cursor;
+let lineInterval;
 
 const sizeCanvases = (width, height) => {
   const puzzle = document.getElementById("puzzle")
@@ -46,21 +47,33 @@ const makePuzzle = (start, end, height, width, squares) => {
   puzzle.draw(puzzleCtx)
 }
 
-const drawFrame = () => {
+export const drawFrame = () => {
     lineCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
     line.draw(lineCtx)
+    lineInterval = setInterval(drawFrame, 10);
 }
 
-let level = 6
+export const clearLine = () => {
+  line.reset()
+  lineCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
+  clearInterval(lineInterval)
+}
+
+const drawSuccess = () => {
+  lineCtx.strokeStyle = "green"
+  lineCtx.stroke()
+}
+
+let level = 1
 makePuzzle(...puzzles[level])
+drawFrame()
 
 export const isGameWon = () => {
   const isWon = checkIfWon(line, puzzle)
 
   if (isWon) {
     level++
+    drawSuccess()
     makePuzzle(...puzzles[level])
   }
 }
-
-setInterval(drawFrame, 10);

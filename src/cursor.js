@@ -1,4 +1,4 @@
-import { isGameWon } from './game'
+import { isGameWon, drawFrame, clearLine } from './game'
 
 export default class Cursor {
   constructor(canvas,line) {
@@ -49,6 +49,7 @@ export default class Cursor {
         document.addEventListener("mousemove", mouseMoveHandler, false);
       } else {
         document.removeEventListener("mousemove", mouseMoveHandler, false);
+        // clearLine()
       }
   }
 
