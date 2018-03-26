@@ -30,6 +30,7 @@ export default class Line {
     this.endVertex = this.vertices[this.onEdge.endPoints[1]]
     this.blockLeftUp = false
     this.blockRightDown = false
+    this.atEnd = false
   }
 
   update(du, dv) {
@@ -121,8 +122,19 @@ export default class Line {
       if (this.onEdge.type === END) {
         if (this.startVertex.type === END) {
           distanceFromStart = distanceFromStart - 160
+
+          if (distanceFromStart === 0) {
+            this.atEnd = true
+          } else {
+            this.atEnd = false
+          }
         } else {
           distanceFromEnd = distanceFromEnd - 160
+          if (distanceFromEnd === 0) {
+            this.atEnd = true
+          } else {
+            this.atEnd = false
+          }
         }
       }
 
@@ -275,7 +287,12 @@ export default class Line {
     elbows.forEach(e => ctx.lineTo(e.u,e.v))
     ctx.lineTo(endU,endV)
     ctx.lineWidth = 30;
-    ctx.strokeStyle = "#90A7D3"
+
+    if (this.atEnd === true) {
+      ctx.strokeStyle = "red"
+    } else {
+      ctx.strokeStyle = "#90A7D3"
+    }
     ctx.stroke()
     ctx.lineWidth = 1;
     this.drawEnd(ctx)

@@ -8,6 +8,8 @@ export const WHITE_SQUARE = "WHITE_SQUARE"
 
 export class Face {
   constructor(u, v) {
+    this.initU = u
+    this.initV = v
     this.size = 200
     this.lineWidth = 60
     this.length = this.size - this.lineWidth/2

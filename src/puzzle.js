@@ -58,7 +58,7 @@ export default class Puzzle {
 
   draw(ctx) {
     Object.values(this.faces).forEach(f => f.draw(ctx))
-    Object.values(this.vertices).forEach(v => v.draw(ctx))
-    Object.values(this.edges).forEach(e => e.draw(ctx))
+    // Object.values(this.vertices).forEach(v => v.draw(ctx))
+    // Object.values(this.edges).forEach(e => e.draw(ctx))
   }
 }

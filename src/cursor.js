@@ -1,3 +1,5 @@
+import { isGameWon } from './game'
+
 export default class Cursor {
   constructor(canvas,line) {
     this.canvas = canvas
@@ -27,7 +29,7 @@ export default class Cursor {
     if (document.pointerLockElement === canvas ||
       document.mozPointerLockElement === canvas) {
         document.exitPointerLock()
-        line.reset()
+        isGameWon()
       } else {
         canvas.requestPointerLock()
 
