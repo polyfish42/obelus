@@ -12,6 +12,9 @@ let puzzle;
 let cursor;
 
 const sizeCanvases = (width, height) => {
+  const puzzle = document.getElementById("puzzle")
+  puzzle.setAttribute("style", `height:${height * 100 + 67.5}px; width: ${width * 100 + 67.5}px`)
+
   const puzzleCanvas = document.getElementById("puzzleCanvas")
   puzzleCanvas.setAttribute("style", `height:${height * 100 + 67.5}px; width: ${width * 100 + 67.5}px`)
   puzzleCanvas.setAttribute("height", `${height * 200 + 135}px`)

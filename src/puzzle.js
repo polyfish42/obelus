@@ -100,10 +100,6 @@ export default class Puzzle {
 
   draw(ctx) {
     ctx.beginPath()
-    ctx.rect(0,0, (this.width) * 200 + 135, (this.height) * 200 + 135)
-    ctx.fillStyle = "#3A45CC"
-    ctx.fill()
-    ctx.beginPath()
     roundRect(ctx,50,50,this.width * 200 + 30,this.height * 200 + 30, 25)
     ctx.fillStyle = "#0F0E6F"
     ctx.fill()

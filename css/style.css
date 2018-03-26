@@ -3,12 +3,13 @@ body {
 }
 
 #puzzle {
+  width: 167.5px;
+  height: 267.5px;
+  margin: 0 auto;
+  margin-top: 50px;
   position: relative;
 }
 
 #puzzleCanvas, #lineCanvas {
   position: absolute;
-  left: 0;
-  right: 0;
-  margin: auto;
 }
