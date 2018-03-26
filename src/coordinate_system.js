@@ -15,8 +15,8 @@ export class Face {
     this.length = this.size - this.lineWidth/2
     this.fillText = `${u}, ${v}`
     this.inside = EMPTY
-    this.u = u * this.size + this.lineWidth/2
-    this.v = v * this.size + this.lineWidth/2
+    this.u = u * this.size + this.lineWidth/2 + 50
+    this.v = v * this.size + this.lineWidth/2 + 50
   }
 
   setInside(symbol) {
@@ -65,13 +65,13 @@ export class Edge {
     if (annotation === W) {
       this.direction = W
       this.endPoints = [[u, v],[u, v + 1]]
-      this.u = u * this.size + this.lineWidth/13
-      this.v = v * this.size + this.size/2
+      this.u = u * this.size + this.lineWidth/13 + 50
+      this.v = v * this.size + this.size/2 + 200 + 50
     } else if (annotation === N) {
       this.direction = N
       this.endPoints = [[u, v], [u + 1, v]]
-      this.u = u * this.size + this.size/2
-      this.v = v * this.size + this.lineWidth/13
+      this.u = u * this.size + this.size/2 + 200 + 50
+      this.v = v * this.size + this.lineWidth/13 + 50
     }
   }
 
@@ -96,8 +96,8 @@ export class Vertex {
     this.size = 200
     this.lineWidth = 60
     this.fillText = `${u},${v}`
-    this.u = u * this.size + this.lineWidth/4
-    this.v = v * this.size + this.lineWidth/4
+    this.u = u * this.size + this.lineWidth/4 + 50
+    this.v = v * this.size + this.lineWidth/4 + 50
     this.type = EMPTY
   }
 
@@ -122,7 +122,7 @@ export class Vertex {
   }
 }
 
-function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+export const roundRect = (ctx, x, y, width, height, radius, fill, stroke) => {
   if (typeof stroke == 'undefined') {
     stroke = true;
   }

@@ -1,4 +1,9 @@
-import { Face, Edge, Vertex, W, N, START, END, BLACK_SQUARE, WHITE_SQUARE } from './coordinate_system'
+import { Face, Edge, Vertex, W, N, START, END, BLACK_SQUARE, WHITE_SQUARE, roundRect } from './coordinate_system'
+
+const UP = "UP"
+const DOWN = "DOWN"
+const LEFT = "LEFT"
+const RIGHT = "RIGHT"
 
 export default class Puzzle {
   constructor(width, height) {
@@ -7,6 +12,8 @@ export default class Puzzle {
     this.faces = {}
     this.edges = {}
     this.vertices = {}
+    this.endNub = null
+    this.endNubDirection = null
     this.generatePuzzle()
   }
 
@@ -20,13 +27,22 @@ export default class Puzzle {
     let vertex;
     if (direction === N && u === this.width) {
       vertex = this.vertices[[u + 1, v]] = new Vertex(u + 1, v)
+      this.endNub = this.vertices[[u ,v]]
+      this.endNubDirection = RIGHT
     } else if (direction === N) {
       vertex = this.vertices[[u,v]] = new Vertex(u, v)
+      this.endNub = this.vertices[[u + 1, v]]
+      this.endNubDirection = LEFT
     } else if (direction === W && v === this.height) {
       vertex = this.vertices[[u, v + 1]] = new Vertex(u, v + 1)
+      this.endNub = this.vertices[[u ,v]]
+      this.endNubDirection = DOWN
     } else if (direction === W) {
       vertex = this.vertices[[u, v]] = new Vertex(u, v)
+      this.endNub = this.vertices[[u, v + 1]]
+      this.endNubDirection = UP
     }
+
     end.type = END
     vertex.type = END
   }
@@ -56,8 +72,44 @@ export default class Puzzle {
     vertices[[width, height]] = new Vertex(width, height)
   }
 
+  drawEndNub(ctx) {
+    ctx.beginPath()
+    // ctx.moveTo()
+    ctx.moveTo(this.endNub.u,this.endNub.v)
+    switch (this.endNubDirection) {
+      case UP:
+        ctx.lineTo(this.endNub.u, this.endNub.v - 40)
+        break;
+      case RIGHT:
+        ctx.lineTo(this.endNub.u + 40, this.endNub.v)
+        break;
+      case DOWN:
+        ctx.lineTo(this.endNub.u, this.endNub.v + 40)
+        break;
+      case LEFT:
+        ctx.lineTo(this.endNub.u - 40, this.endNub.v)
+        break;
+      default:
+        ctx.closePath()
+    }
+    ctx.lineWidth = 30
+    ctx.lineCap = "round"
+    ctx.strokeStyle = "#0F0E6F" 
+    ctx.stroke()
+    ctx.closePath()
+  }
+
   draw(ctx) {
+    ctx.beginPath()
+    ctx.rect(0,0, (this.width) * 200 + 150, (this.height) * 200 + 150)
+    ctx.fillStyle = "#3A45CC"
+    ctx.fill()
+    ctx.beginPath()
+    roundRect(ctx,50,50,this.width * 210,this.height * 210, 25)
+    ctx.fillStyle = "#0F0E6F"
+    ctx.fill()
     Object.values(this.faces).forEach(f => f.draw(ctx))
+    this.drawEndNub(ctx)
     // Object.values(this.vertices).forEach(v => v.draw(ctx))
     // Object.values(this.edges).forEach(e => e.draw(ctx))
   }

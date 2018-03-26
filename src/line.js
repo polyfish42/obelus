@@ -21,10 +21,10 @@ export default class Line {
   }
 
   init(u, v) {
-    this.startU = u * 200 + 15
-    this.startV = v * 200 + 15
-    this.endU = u * 200 + 15
-    this.endV = v * 200 + 15
+    this.startU = u * 200 + 65
+    this.startV = v * 200 + 65
+    this.endU = u * 200 + 65
+    this.endV = v * 200 + 65
     this.onEdge = new Edge(u, v, N)
     this.startVertex = this.vertices[[u,v]]
     this.endVertex = this.vertices[this.onEdge.endPoints[1]]
@@ -282,7 +282,7 @@ export default class Line {
     ctx.beginPath()
     ctx.lineCap = "round"
     ctx.lineJoin = "round"
-    ctx.arc(startU, startV,10,0,Math.PI*2)
+    ctx.arc(startU, startV,25,0,Math.PI*2)
     ctx.moveTo(startU, startV)
     elbows.forEach(e => ctx.lineTo(e.u,e.v))
     ctx.lineTo(endU,endV)
