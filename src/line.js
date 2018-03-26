@@ -282,7 +282,7 @@ export default class Line {
     ctx.beginPath()
     ctx.lineCap = "round"
     ctx.lineJoin = "round"
-    ctx.arc(startU, startV,25,0,Math.PI*2)
+    ctx.arc(startU, startV,15,0,Math.PI*2)
     ctx.moveTo(startU, startV)
     elbows.forEach(e => ctx.lineTo(e.u,e.v))
     ctx.lineTo(endU,endV)
