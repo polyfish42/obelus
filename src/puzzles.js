@@ -89,6 +89,24 @@ export const puzzles = {
     [[3,0],BLACK_SQUARE],
     [[3,1],BLACK_SQUARE],
     [[3,3],BLACK_SQUARE]
+  ]],
+  10: [[0,4],[4,-1,W],4,4,[
+    [[0,0],WHITE_SQUARE],
+    [[0,1],BLACK_SQUARE],
+    [[0,2],BLACK_SQUARE],
+    [[0,3],WHITE_SQUARE],
+    [[1,0],BLACK_SQUARE],
+    [[1,1],BLACK_SQUARE],
+    [[1,2],BLACK_SQUARE],
+    [[1,3],BLACK_SQUARE],
+    [[2,0],BLACK_SQUARE],
+    [[2,1],BLACK_SQUARE],
+    [[2,2],BLACK_SQUARE],
+    [[2,3],BLACK_SQUARE],
+    [[3,0],WHITE_SQUARE],
+    [[3,1],BLACK_SQUARE],
+    [[3,2],BLACK_SQUARE],
+    [[3,3],WHITE_SQUARE]
   ]]
 }
 
