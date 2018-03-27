@@ -50,30 +50,17 @@ const makePuzzle = (start, end, height, width, squares) => {
 export const drawFrame = () => {
     lineCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
     line.draw(lineCtx)
-    lineInterval = setInterval(drawFrame, 10);
-}
-
-export const clearLine = () => {
-  line.reset()
-  lineCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
-  clearInterval(lineInterval)
-}
-
-const drawSuccess = () => {
-  lineCtx.strokeStyle = "green"
-  lineCtx.stroke()
 }
 
 let level = 1
 makePuzzle(...puzzles[level])
-drawFrame()
+setInterval(drawFrame, 10);
 
 export const isGameWon = () => {
   const isWon = checkIfWon(line, puzzle)
 
   if (isWon) {
     level++
-    drawSuccess()
     makePuzzle(...puzzles[level])
   }
 }

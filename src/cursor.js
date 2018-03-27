@@ -49,7 +49,6 @@ export default class Cursor {
         document.addEventListener("mousemove", mouseMoveHandler, false);
       } else {
         document.removeEventListener("mousemove", mouseMoveHandler, false);
-        // clearLine()
       }
   }
 
