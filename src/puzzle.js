@@ -98,6 +98,15 @@ export default class Puzzle {
     ctx.closePath()
   }
 
+  flashErrors(ctx, duration) {
+    // this.draw(ctx)
+    // ctx.beginPath()
+    // ctx.moveTo(0,0)
+    // ctx.lineTo(100,100)
+    // ctx.lineWidth = 10
+    // ctx.stroke()
+  }
+
   draw(ctx) {
     ctx.beginPath()
     ctx.clearRect(0,0,500,500)

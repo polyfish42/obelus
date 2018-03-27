@@ -83,5 +83,7 @@ export const isGameWon = () => {
     level++
     makePuzzle(...puzzles[level])
     makeLevels(level)
+  } else {
+    puzzle.flashErrors(puzzleCtx, 10)
   }
 }

@@ -35,9 +35,17 @@ export default class Cursor {
 
         if ("onpointerlockchange" in document) {
           document.addEventListener('pointerlockchange', lockChangeAlert, false);
+          const instructions = document.getElementById("instructions")
+          if (instructions !== null) {
+            instructions.parentNode.removeChild(instructions)
+          }
           line.turnOn()
         } else if ("onmozpointerlockchange" in document) {
           document.addEventListener('mozpointerlockchange', lockChangeAlert, false);
+          const instructions = document.getElementById("instructions")
+          if (instructions !== null) {
+            instructions.parentNode.removeChild(instructions)
+          }
           line.turnOn()
         }
       }
