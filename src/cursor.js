@@ -35,8 +35,10 @@ export default class Cursor {
 
         if ("onpointerlockchange" in document) {
           document.addEventListener('pointerlockchange', lockChangeAlert, false);
+          line.turnOn()
         } else if ("onmozpointerlockchange" in document) {
           document.addEventListener('mozpointerlockchange', lockChangeAlert, false);
+          line.turnOn()
         }
       }
   }

@@ -31,6 +31,13 @@ export default class Line {
     this.blockLeftUp = false
     this.blockRightDown = false
     this.atEnd = false
+    this.startCircleRadius = 0
+    this.startCircleGrowth = 1
+    this.lineOn = false
+  }
+
+  turnOn() {
+    this.lineOn = true
   }
 
   update(du, dv) {
@@ -277,12 +284,36 @@ export default class Line {
     ctx.fill()
   }
 
+  startAnimate(ctx) {
+    if (this.lineOn === true) {
+       ctx.arc(this.startU, this.startV,15,0,Math.PI*2)
+       return undefined
+    }
+
+    if (this.startCircleRadius > 15) {
+      this.startCircleGrowth = -1
+    } else if (this.startCircleRadius <= 0.3){
+      this.startCircleGrowth = 1
+    }
+
+    if (this.startCircleGrowth === -1) {
+      this.startCircleRadius -= 0.15
+    } else {
+      this.startCircleRadius += 0.15
+    }
+    ctx.beginPath()
+    ctx.lineWidth = 1;
+    ctx.arc(this.startU, this.startV, this.startCircleRadius,0,Math.PI*2)
+    ctx.stroke()
+    ctx.closePath()
+  }
+
   draw(ctx) {
     const { startU, startV, endU, endV, elbows} = this
     ctx.beginPath()
     ctx.lineCap = "round"
     ctx.lineJoin = "round"
-    ctx.arc(startU, startV,15,0,Math.PI*2)
+    this.startAnimate(ctx)
     ctx.moveTo(startU, startV)
     elbows.forEach(e => ctx.lineTo(e.u,e.v))
     ctx.lineTo(endU,endV)
