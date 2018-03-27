@@ -1,16 +1,28 @@
+
+* {
+  -webkit-animation: fadein 0.4s ease;
+     -moz-animation: fadein 0.4s ease;
+      -ms-animation: fadein 0.4s ease;
+       -o-animation: fadein 0.4s ease;
+          animation: fadein 0.4s ease;
+          -webkit-user-select: none; /* Chrome/Safari */
+          -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* IE10+ */
+}
+
 body {
   background-color: black;
-  color: rgba(255,255,255,0.8);
+  color: rgba(255,255,255,0.9);
   font-family: sans-serif;
 }
 
 h1, p {
   text-align: center;
+  line-height: 1.4;
 }
 
 h1 {
   font-size: 48px;
-  line-height: 1.2;
 }
 
 a {
@@ -18,19 +30,26 @@ a {
   color: #3A45CC;
 }
 
-a:visited {
-  color: #3A45CC;
+a:hover {
+  color: white;
+}
+
+#levels {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  height: 30px;
 }
 
 #puzzle {
   width: 167.5px;
   height: 267.5px;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 40px;
   position: relative;
 }
 
-#puzzleCanvas, #lineCanvas {
+#puzzleCanvas, #lineCanvas, #puzzle__cover {
   position: absolute;
 }
 
@@ -45,4 +64,9 @@ a:visited {
 
 #links a {
   margin-top: 5px;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
