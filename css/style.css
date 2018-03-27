@@ -1,6 +1,25 @@
 body {
   background-color: black;
-  color: white;
+  color: rgba(255,255,255,0.8);
+  font-family: sans-serif;
+}
+
+h1, p {
+  text-align: center;
+}
+
+h1 {
+  font-size: 48px;
+  line-height: 1.2;
+}
+
+a {
+  text-decoration: none;
+  color: #3A45CC;
+}
+
+a:visited {
+  color: #3A45CC;
 }
 
 #puzzle {
@@ -13,4 +32,17 @@ body {
 
 #puzzleCanvas, #lineCanvas {
   position: absolute;
+}
+
+#links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 200px;
+  margin: 0 auto;
+}
+
+#links a {
+  margin-top: 5px;
 }
