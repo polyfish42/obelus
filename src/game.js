@@ -53,7 +53,7 @@ const makePuzzle = (start, end, height, width, squares) => {
 
 export const drawFrame = () => {
     lineCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
-    if (level === 1 && line.lineOn === true && line.atEnd === false) {
+    if (line.lineOn === true && line.atEnd === false) {
       animateEndNub()
     }
     line.draw(lineCtx)

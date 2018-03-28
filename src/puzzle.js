@@ -111,7 +111,28 @@ export default class Puzzle {
     let circleRadius = 5
     let growthDirection = 1
     let timeOut = 50
+
     return () => {
+      let u = this.endNub.u
+      let v = this.endNub.v
+
+      switch (this.endNubDirection) {
+        case RIGHT:
+          u += 37
+          break;
+        case UP:
+          v -= 37
+          break;
+        case DOWN:
+          v += 37
+          break;
+        case LEFT:
+          u -= 37
+          break;
+        default:
+          null
+      }
+
       if (circleRadius > 25) {
         circleRadius = 1
         timeOut = 150
@@ -125,7 +146,7 @@ export default class Puzzle {
       if (timeOut > 0) {
         timeOut -= 1
       } else {
-        ctx.arc(this.endNub.u + 37, this.endNub.v, circleRadius,0,Math.PI*2)
+        ctx.arc(u, v, circleRadius,0,Math.PI*2)
       }
       ctx.stroke()
       ctx.closePath()
