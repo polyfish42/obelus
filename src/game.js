@@ -79,7 +79,11 @@ export const isGameWon = () => {
   const isWon = checkIfWon(line, puzzle)
   const puzzleDiv = document.getElementById("puzzle")
 
-  if (isWon) {
+  if (isWon && level === 12) {
+    level = 1
+    makePuzzle(...puzzles[level])
+    makeLevels(level)
+  } else if (isWon) {
     level++
     makePuzzle(...puzzles[level])
     makeLevels(level)
