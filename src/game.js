@@ -12,6 +12,7 @@ let puzzle;
 let puzzleDiv;
 let cursor;
 let lineInterval;
+let animateEndNub;
 
 const sizeCanvases = (width, height) => {
   const puzzleDiv = document.getElementById("puzzle")
@@ -40,6 +41,8 @@ const makePuzzle = (start, end, height, width, squares) => {
   puzzle = new Puzzle(height, width)
   line = new Line(start[0], start[1], puzzle.vertices, puzzle.edges)
   cursor = new Cursor(lineCanvas,line)
+  animateEndNub = puzzle.animateEndNub(lineCtx)
+
 
   puzzle.setStart(...start)
   puzzle.setEnd(...end)
@@ -50,6 +53,9 @@ const makePuzzle = (start, end, height, width, squares) => {
 
 export const drawFrame = () => {
     lineCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
+    if (level === 1 && line.lineOn === true && line.atEnd === false) {
+      animateEndNub()
+    }
     line.draw(lineCtx)
 }
 

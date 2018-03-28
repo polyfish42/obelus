@@ -107,6 +107,32 @@ export default class Puzzle {
     // ctx.stroke()
   }
 
+  animateEndNub(ctx) {
+    let circleRadius = 5
+    let growthDirection = 1
+    let timeOut = 50
+    return () => {
+      if (circleRadius > 25) {
+        circleRadius = 1
+        timeOut = 150
+      } else if (timeOut < 1){
+        circleRadius += 0.3
+      }
+
+      ctx.beginPath()
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = `rgba(255,255,255,${(25 - circleRadius) / 25})`
+      if (timeOut > 0) {
+        timeOut -= 1
+      } else {
+        ctx.arc(this.endNub.u + 37, this.endNub.v, circleRadius,0,Math.PI*2)
+      }
+      ctx.stroke()
+      ctx.closePath()
+    }
+
+  }
+
   draw(ctx) {
     ctx.beginPath()
     ctx.clearRect(0,0,500,500)
