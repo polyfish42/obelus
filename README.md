@@ -16,15 +16,15 @@ I will be using Vanilla Javascript, HTML5 Canvas, and CSS for this project. I an
 # Implementation Timeline
 
 **Phase I: Create board**
-- [ ] Implement Data structure for board
-- [ ] Create line UX
-- [ ] Add colored squares
+- [X] Implement Data structure for board
+- [X] Create line UX
+- [X] Add colored squares
 
 **Phase II: Create solving logic**
-- [ ] Write algorithim to decide if the puzzle is solved
+- [X] Write algorithim to decide if the puzzle is solved
 
 **Phase III: Create opening tutorial and styling**
-- [ ] Implement game logic (start, end, etc)
-- [ ] Create the first 10 puzzles of increasing difficulty
-- [ ] Style the backgound of the puzzle
+- [X] Implement game logic (start, end, etc)
+- [X] Create the first 10 puzzles of increasing difficulty
+- [X] Style the backgound of the puzzle
 
