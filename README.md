@@ -15,8 +15,6 @@ The line in Obelus needed to be easy to draw, which means that the mouse input s
   <img width="400px" height="196px" src="https://raw.githubusercontent.com/polyfish42/obelus/master/docs/Guessing.png">
 </p>
 
-*Code Example*
-
 ```javascript
 if (closestVertex === startVertex) {
           if (direction === UP || direction === LEFT || direction === DOWN) {
@@ -49,6 +47,40 @@ The line can also be erased by "moving backwards". Crossing the line over itself
 </p>
 
 ## Puzzle checking algorithm
+
+The check if a gamer has solved each puzzle, I used a variation of the **breadth first search** algorithm. The algorithm checks each square's boundaries to see if there is a line next to it. If there's not, it will check the adjacent square to see if it violates any of the original square's rules. The algorithm continues until it has checked all neighbors of a square, or it has hit a combination of lines and edges of the puzzle on all sides.
+
+```javascript
+const checkSquare = (square, line, puzzle, oppositeColor) => {
+  const checkedSquares = new Set()
+  checkedSquares.add(square)
+  const squares = [square]
+  let sq;
+  let allLegal = true
+
+  while (squares.length > 0) {
+    sq = squares.shift()
+
+    borders(sq.initU, sq.initV).forEach(border => {
+      if (puzzle.edges[border] && puzzle.edges[border].lineThrough === false) {
+          adjacentSquares(border, puzzle, sq).forEach(join => {
+            if (join.inside === oppositeColor) {
+              allLegal = false
+              join.setError()
+            }
+            if (!checkedSquares.has(join)) {
+            checkedSquares.add(join)
+            squares.push(join)
+            }
+          })
+        }
+    })
+  }
+  return allLegal
+}
+```
+
+Although it would be possible to stop the execution of the algorithm early if it found a square that was illegal, the algorithm still checks each square so that the game can show the users every square that was illegal.
 
 ## Todos
 - [X] Implement Data structure for board
