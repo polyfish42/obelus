@@ -11,6 +11,7 @@ HTML5 Canvas, CSS, JavaScript
 ## Line algorithm
 - maps user input to drawing the line
 - guesses where users are trying to go
+![Line Direction Guessing](https://raw.githubusercontent.com/polyfish42/obelus/master/docs/Guessing.png)
 - if your closer to one side, will favor that side
 - can't cross over itself, but can erase itself
 
