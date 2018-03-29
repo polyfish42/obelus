@@ -9,13 +9,11 @@ Solve puzzles by drawing lines from the start to the end. Different symbols in t
 HTML5 Canvas, CSS, JavaScript
 
 ## Line algorithm
-- maps user input to drawing the line
-- guesses where users are trying to go
+The line in Obelus needed to be easy to draw, which meant more than taking a naive approach. The game intelligently guesses where you are trying to move the line, based on where you are on the board. For example, when you're closer to the left side of a horizontal line segment, moving up or down will move you to the left.
 <p align="center">
   <img width="400px" height="196px" src="https://raw.githubusercontent.com/polyfish42/obelus/master/docs/Guessing.png">
 </p>
-- if your closer to one side, will favor that side
-- can't cross over itself, but can erase itself
+The line can also be erased by "moving backwards". Crossing the line over itself, however, is not allowed.
 
 ## Puzzle checking algorithm
 
