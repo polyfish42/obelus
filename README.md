@@ -12,6 +12,10 @@ HTML5 Canvas, CSS, JavaScript
 - maps user input to drawing the line
 - guesses where users are trying to go
 ![Line Direction Guessing](https://raw.githubusercontent.com/polyfish42/obelus/master/docs/Guessing.png)
+
+<p align="center">
+  <img width="460" height="300" src="http://www.fillmurray.com/460/300">
+</p>
 - if your closer to one side, will favor that side
 - can't cross over itself, but can erase itself
 
