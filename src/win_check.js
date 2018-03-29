@@ -42,20 +42,18 @@ const checkSquare = (square, line, puzzle, oppositeColor) => {
     sq = squares.shift()
 
     borders(sq.initU, sq.initV).forEach(border => {
-      if (puzzle.edges[border]) {
-        if (puzzle.edges[border].lineThrough === false) {
+      if (puzzle.edges[border] && puzzle.edges[border].lineThrough === false) {
           adjacentSquares(border, puzzle, sq).forEach(join => {
+            if (join.inside === oppositeColor) {
+              allLegal = false
+              join.setError()
+            }
             if (!checkedSquares.has(join)) {
-              if (join.inside === oppositeColor) {
-                allLegal = false
-              } else {
-                checkedSquares.add(join)
-                squares.push(join)
-              }
+            checkedSquares.add(join)
+            squares.push(join)
             }
           })
         }
-      }
     })
   }
   return allLegal
@@ -63,21 +61,21 @@ const checkSquare = (square, line, puzzle, oppositeColor) => {
 
 const allSquaresWon = (line, puzzle) => {
   return Object.values(puzzle.faces).reduce((bool, face) => {
-    if (bool === false) {
-      return false
-    }
-
+    let isFaceLegal;
     switch (face.inside) {
-      case EMPTY:
-        return true
-        break;
-      case WHITE_SQUARE:
-        return checkSquare(face, line, puzzle, BLACK_SQUARE)
-      case BLACK_SQUARE:
-        return checkSquare(face, line, puzzle, WHITE_SQUARE)
-      default:
-        return bool
+    case EMPTY:
+      isFaceLegal = true
+      break;
+    case WHITE_SQUARE:
+      isFaceLegal = checkSquare(face, line, puzzle, BLACK_SQUARE)
+      break;
+    case BLACK_SQUARE:
+      isFaceLegal = checkSquare(face, line, puzzle, WHITE_SQUARE)
+      break;
+    default:
+      isFaceLegal = bool
     }
+  return bool === false ? false : isFaceLegal
   }, true)
 }
 
@@ -85,11 +83,10 @@ const checkIfWon = (line, puzzle) => {
   if (line.atEnd === true && allSquaresWon(line, puzzle)) {
     return true
   } else {
+    setTimeout(() => puzzle.clearErrors(), 1000)
     line.reset()
     return false
   }
 }
 
 export default checkIfWon;
-
-// check each direction. Is that edge on? then stop. else check that neighbor. Continue and keep track of tiles I've alread checked

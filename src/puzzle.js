@@ -98,13 +98,26 @@ export default class Puzzle {
     ctx.closePath()
   }
 
-  flashErrors(ctx, duration) {
-    // this.draw(ctx)
-    // ctx.beginPath()
-    // ctx.moveTo(0,0)
-    // ctx.lineTo(100,100)
-    // ctx.lineWidth = 10
-    // ctx.stroke()
+  flashErrors(ctx) {
+    ctx.beginPath()
+    for (var face in this.faces) {
+      if (this.faces.hasOwnProperty(face)) {
+        let f = this.faces[face]
+        if (f.error === true) {
+          roundRect(ctx, f.u + 40, f.v + 40, 90, 90, 30)
+          ctx.fillStyle = "red"
+          ctx.fill()
+        }
+      }
+    }
+  }
+
+  clearErrors() {
+    for (var face in this.faces) {
+      if (this.faces.hasOwnProperty(face)) {
+        this.faces[face].error = false
+      }
+    }
   }
 
   animateEndNub(ctx) {

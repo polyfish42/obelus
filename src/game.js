@@ -6,7 +6,7 @@ import puzzles from './puzzles'
 import { N, W, BLACK_SQUARE, WHITE_SQUARE } from './coordinate_system'
 
 let puzzleCtx;
-let lineCtx;
+let animateCtx;
 let line;
 let puzzle;
 let puzzleDiv;
@@ -36,12 +36,12 @@ const getCtx = (id) => {
 const makePuzzle = (start, end, height, width, squares) => {
   sizeCanvases(height, width)
   puzzleCtx = getCtx("puzzleCanvas")
-  lineCtx = getCtx("lineCanvas")
+  animateCtx = getCtx("lineCanvas")
 
   puzzle = new Puzzle(height, width)
   line = new Line(start[0], start[1], puzzle.vertices, puzzle.edges)
   cursor = new Cursor(lineCanvas,line)
-  animateEndNub = puzzle.animateEndNub(lineCtx)
+  animateEndNub = puzzle.animateEndNub(animateCtx)
 
 
   puzzle.setStart(...start)
@@ -52,11 +52,21 @@ const makePuzzle = (start, end, height, width, squares) => {
 }
 
 export const drawFrame = () => {
-    lineCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
-    if (line.lineOn === true && line.atEnd === false) {
-      animateEndNub()
+    let showErrorSwitch = 0
+
+    return () => {
+      animateCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
+      if (line.lineOn === true && line.atEnd === false) {
+        animateEndNub()
+      }
+      line.draw(animateCtx)
+
+      if (showErrorSwitch > 15) {
+        puzzle.flashErrors(animateCtx)
+      }
+
+      showErrorSwitch = showErrorSwitch > 30 ? 0 : showErrorSwitch + 1
     }
-    line.draw(lineCtx)
 }
 
 const makeLevels = level => {
@@ -79,7 +89,7 @@ const makeLevels = level => {
 let level = 1
 makePuzzle(...puzzles[level])
 makeLevels(level)
-setInterval(drawFrame, 10);
+setInterval(drawFrame(), 10);
 
 export const isGameWon = () => {
   const isWon = checkIfWon(line, puzzle)
@@ -93,7 +103,5 @@ export const isGameWon = () => {
     level++
     makePuzzle(...puzzles[level])
     makeLevels(level)
-  } else {
-    puzzle.flashErrors(puzzleCtx, 10)
   }
 }

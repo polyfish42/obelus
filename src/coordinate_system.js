@@ -17,6 +17,11 @@ export class Face {
     this.inside = EMPTY
     this.u = u * this.size + this.lineWidth/2 + 50
     this.v = v * this.size + this.lineWidth/2 + 50
+    this.error = false
+  }
+
+  setError() {
+    this.error = true
   }
 
   setInside(symbol) {
