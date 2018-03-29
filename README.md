@@ -9,17 +9,44 @@ Solve puzzles by drawing lines from the start to the end. Different symbols in t
 HTML5 Canvas, CSS, JavaScript
 
 ## Line algorithm
-The line in Obelus needed to be easy to draw, which meant more than taking a naive approach. The game intelligently guesses where you are trying to move the line, based on where you are on the board. For example, when you're closer to the left side of a horizontal line segment, moving up or down will move you to the left.
+The line in Obelus needed to be easy to draw, which means that the mouse input should be as forgiving as possible. The line algorithm intelligently guesses where you are trying to move based on where you are on the board. For example, when you're closer to the left side of a horizontal line segment, moving the cursor up or down will move you to the left.
 
 <p align="center">
   <img width="400px" height="196px" src="https://raw.githubusercontent.com/polyfish42/obelus/master/docs/Guessing.png">
 </p>
 
+*Code Example*
+
+```javascript
+if (closestVertex === startVertex) {
+          if (direction === UP || direction === LEFT || direction === DOWN) {
+            if (this.blockLeftUp === true && magnitude > distanceFromStart - 30) {
+              this.endU -= distanceFromStart - 30
+              break
+            } else if (distanceFromStart > magnitude) {
+              this.endU -= magnitude
+              break
+            } else {
+              magnitude -= distanceFromStart
+              this.endU -= distanceFromStart
+            }
+          } else {
+            if (distanceFromEnd > magnitude) {
+              this.endU += magnitude
+              break
+            } else {
+              magnitude -= distanceFromEnd
+              this.endU += distanceFromEnd
+            }
+          }
+        } 
+```
+
 The line can also be erased by "moving backwards". Crossing the line over itself, however, is not allowed.
 
 <p align="center">
   <img width="400px" height="158px" src="https://raw.githubusercontent.com/polyfish42/obelus/master/docs/Boundaries.png">
- </p>
+</p>
 
 ## Puzzle checking algorithm
 
