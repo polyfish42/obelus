@@ -50,6 +50,10 @@ The line can also be erased by "moving backwards". Crossing the line over itself
 
 The check if a gamer has solved each puzzle, I used a variation of the **breadth first search** algorithm. The algorithm checks each square's boundaries to see if there is a line next to it. If there's not, it will check the adjacent square to see if it violates any of the original square's rules. The algorithm continues until it has checked all neighbors of a square, or it has hit a combination of lines and edges of the puzzle on all sides.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/polyfish42/obelus/master/docs/checking%20algorithm.png" />
+</p>
+
 ```javascript
 const checkSquare = (square, line, puzzle, oppositeColor) => {
   const checkedSquares = new Set()
