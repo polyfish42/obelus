@@ -1,9 +1,9 @@
-import Puzzle from './puzzle'
-import Line from './line'
-import Cursor from './cursor'
-import checkIfWon from './win_check'
-import puzzles from './puzzles'
-import { N, W, BLACK_SQUARE, WHITE_SQUARE } from './coordinate_system'
+import Puzzle from './puzzle';
+import Line from './line';
+import Cursor from './cursor';
+import checkIfWon from './win_check';
+import puzzles from './puzzles';
+import { N, W, BLACK_SQUARE, WHITE_SQUARE } from './coordinate_system';
 
 let puzzleCtx;
 let animateCtx;
@@ -15,23 +15,23 @@ let lineInterval;
 let animateEndNub;
 
 const sizeCanvases = (width, height) => {
-  const puzzleDiv = document.getElementById("puzzle")
-  puzzleDiv.setAttribute("style", `height:${height * 100 + 67.5}px; width: ${width * 100 + 67.5}px`)
+    const puzzleDiv = document.getElementById("puzzle");
+    puzzleDiv.setAttribute("style", `height:${height * 100 + 67.5}px; width: ${width * 100 + 67.5}px`);
 
-  const puzzleCanvas = document.getElementById("puzzleCanvas")
-  puzzleCanvas.setAttribute("style", `height:${height * 100 + 67.5}px; width: ${width * 100 + 67.5}px`)
-  puzzleCanvas.setAttribute("height", `${height * 200 + 135}px`)
-  puzzleCanvas.setAttribute("width", `${width * 200 + 135}px`)
+    const puzzleCanvas = document.getElementById("puzzleCanvas");
+    puzzleCanvas.setAttribute("style", `height:${height * 100 + 67.5}px; width: ${width * 100 + 67.5}px`);
+    puzzleCanvas.setAttribute("height", `${height * 200 + 135}px`);
+    puzzleCanvas.setAttribute("width", `${width * 200 + 135}px`);
 
-  const lineCanvas = document.getElementById("lineCanvas")
-  lineCanvas.setAttribute("style", `height:${height * 100 + 67.5}px; width: ${width * 100 + 67.5}px`)
-  lineCanvas.setAttribute("height", `${height * 200 + 135}px`)
-  lineCanvas.setAttribute("width", `${width * 200 + 135}px`)
-}
+    const lineCanvas = document.getElementById("lineCanvas");
+    lineCanvas.setAttribute("style", `height:${height * 100 + 67.5}px; width: ${width * 100 + 67.5}px`);
+    lineCanvas.setAttribute("height", `${height * 200 + 135}px`);
+    lineCanvas.setAttribute("width", `${width * 200 + 135}px`);
+};
 
 const getCtx = (id) => {
-  return document.getElementById(id).getContext("2d")
-}
+    return document.getElementById(id).getContext("2d");
+};
 
 const makePuzzle = (start, end, height, width, squares) => {
   sizeCanvases(height, width)

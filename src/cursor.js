@@ -20,7 +20,7 @@ export default class Cursor {
     document.mozExitPointerLock;
 
 
-    document.addEventListener("click", clickHandler, false)
+      document.addEventListener("click", clickHandler, false);
   }
 
   clickHandler(e) {
@@ -28,46 +28,43 @@ export default class Cursor {
 
     if (document.pointerLockElement === canvas ||
       document.mozPointerLockElement === canvas) {
-        document.exitPointerLock()
-        isGameWon()
+        document.exitPointerLock();
+        isGameWon();
       } else {
-        canvas.requestPointerLock()
+          canvas.requestPointerLock();
 
         if ("onpointerlockchange" in document) {
           document.addEventListener('pointerlockchange', lockChangeAlert, false);
-          const instructions = document.getElementById("instructions")
-          if (instructions !== null) {
-            instructions.parentNode.removeChild(instructions)
-          }
-          line.turnOn()
+            line.turnOn();
         } else if ("onmozpointerlockchange" in document) {
           document.addEventListener('mozpointerlockchange', lockChangeAlert, false);
-          const instructions = document.getElementById("instructions")
-          if (instructions !== null) {
-            instructions.parentNode.removeChild(instructions)
-          }
-          line.turnOn()
+            line.turnOn();
         }
       }
   }
 
   lockChangeAlert() {
-    const { canvas, mouseMoveHandler } = this
+    const { canvas, mouseMoveHandler } = this;
 
     if (document.pointerLockElement === canvas ||
       document.mozPointerLockElement === canvas) {
         document.addEventListener("mousemove", mouseMoveHandler, false);
       } else {
         document.removeEventListener("mousemove", mouseMoveHandler, false);
+	const instructions = document.querySelectorAll(".instructions");
+	   
+        if (instructions !== null) {
+              instructions.forEach(i => i.parentNode.removeChild(i));
+        }
       }
   }
 
   mouseMoveHandler(e) {
-    const { canvas, line } = this
+      const { canvas, line } = this;
 
-    const du = e.movementX
-    const dv = e.movementY
+      const du = e.movementX;
+      const dv = e.movementY;
 
-    this.line.update(du, dv)
+      this.line.update(du, dv);
   }
 }

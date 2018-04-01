@@ -109,6 +109,6 @@ export const puzzles = {
     [[3,2],BLACK_SQUARE],
     [[3,3],WHITE_SQUARE]
   ]]
-}
+};
 
 export default puzzles;
