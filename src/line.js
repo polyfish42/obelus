@@ -106,41 +106,41 @@ export default class Line {
 
         switch (direction) {
           case UP:
-            nextEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV)-1,W]]
+            nextEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV)-1,W]];
             break;
           case RIGHT:
-            nextEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),N]]
+            nextEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),N]];
             break;
           case DOWN:
-            nextEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),W]]
+            nextEdge = this.edges[[this.coordinate(this.endU),this.coordinate(this.endV),W]];
             break;
           case LEFT:
-            nextEdge = this.edges[[this.coordinate(this.endU)-1,this.coordinate(this.endV),N]]
+            nextEdge = this.edges[[this.coordinate(this.endU)-1,this.coordinate(this.endV),N]];
             break;
         }
         if (nextEdge) {
-          this.onEdge = nextEdge
-          this.startVertex = vertices[this.onEdge.endPoints[0]]
-          this.endVertex = vertices[this.onEdge.endPoints[1]]
+            this.onEdge = nextEdge;
+            this.startVertex = vertices[this.onEdge.endPoints[0]];
+            this.endVertex = vertices[this.onEdge.endPoints[1]];
         }
       }
 
       // Handle the end piece
       if (this.onEdge.type === END) {
         if (this.startVertex.type === END) {
-          distanceFromStart = distanceFromStart - 160
+            distanceFromStart = distanceFromStart - 160;
 
-          if (distanceFromStart === 0) {
-            this.atEnd = true
+          if (distanceFromStart <= 30) {
+              this.atEnd = true;
           } else {
-            this.atEnd = false
+              this.atEnd = false;
           }
         } else {
-          distanceFromEnd = distanceFromEnd - 160
-          if (distanceFromEnd === 0) {
-            this.atEnd = true
+            distanceFromEnd = distanceFromEnd - 160;
+          if (distanceFromEnd <= 30) {
+              this.atEnd = true;
           } else {
-            this.atEnd = false
+              this.atEnd = false;
           }
         }
       }
