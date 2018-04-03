@@ -31,25 +31,25 @@ const sizeCanvases = (width, height) => {
 
 const getCtx = (id) => {
     return document.getElementById(id).getContext("2d");
-};
+    };
 
 const makePuzzle = (start, end, height, width, squares) => {
-  sizeCanvases(height, width)
-  puzzleCtx = getCtx("puzzleCanvas")
-  animateCtx = getCtx("lineCanvas")
+    sizeCanvases(height, width);
+    puzzleCtx = getCtx("puzzleCanvas");
+    animateCtx = getCtx("lineCanvas");
 
-  puzzle = new Puzzle(height, width)
-  line = new Line(start[0], start[1], puzzle.vertices, puzzle.edges)
-  cursor = new Cursor(lineCanvas,line)
-  animateEndNub = puzzle.animateEndNub(animateCtx)
+    puzzle = new Puzzle(height, width);
+    line = new Line(start[0], start[1], puzzle.vertices, puzzle.edges);
+    cursor = new Cursor(lineCanvas,line);
+    animateEndNub = puzzle.animateEndNub(animateCtx);
 
 
-  puzzle.setStart(...start)
-  puzzle.setEnd(...end)
+    puzzle.setStart(...start);
+    puzzle.setEnd(...end);
 
-  squares.forEach(sq => puzzle.faces[sq[0]].inside = sq[1])
-  puzzle.draw(puzzleCtx)
-}
+    squares.forEach(sq => puzzle.faces[sq[0]].inside = sq[1]);
+    puzzle.draw(puzzleCtx);
+};
 
 export const drawFrame = () => {
     let showErrorSwitch = 0
@@ -57,51 +57,67 @@ export const drawFrame = () => {
     return () => {
       animateCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
       if (line.lineOn === true && line.atEnd === false) {
-        animateEndNub()
+          animateEndNub();
       }
-      line.draw(animateCtx)
+	line.draw(animateCtx);
 
       if (showErrorSwitch > 15) {
-        puzzle.flashErrors(animateCtx)
+          puzzle.flashErrors(animateCtx);
       }
 
-      showErrorSwitch = showErrorSwitch > 30 ? 0 : showErrorSwitch + 1
-    }
-}
+	showErrorSwitch = showErrorSwitch > 30 ? 0 : showErrorSwitch + 1;
+    };
+};
 
 const makeLevels = level => {
-  const ctx = document.getElementById("levels").getContext("2d")
+  const ctx = document.getElementById("levels").getContext("2d");
   ctx.clearRect(0, 0, 500, 500);
 
-  for (var i = 0; i < 11; i++) {
-    ctx.beginPath()
+  for (var i = 0; i < 10; i++) {
+    ctx.beginPath();
+      
     if (i + 1 < level) {
-      ctx.fillStyle = "yellow"
+     ctx.fillStyle = "yellow";
     } else {
-      ctx.fillStyle = "rgba(255,255,255,0.5)"
+     ctx.fillStyle = "rgba(255,255,255,0.5)";
     }
-    ctx.arc(i * 18 + 15, 20, 7, 0, Math.PI*2)
-    ctx.fill()
-    ctx.closePath()
+      ctx.arc(i * 18 + 15, 20, 7, 0, Math.PI*2);
+      ctx.fill();
+      ctx.closePath();
   }
-}
+};
 
-let level = 1
-makePuzzle(...puzzles[level])
-makeLevels(level)
+let level = 1;
+makePuzzle(...puzzles[level]);
+makeLevels(level);
 setInterval(drawFrame(), 10);
 
 export const isGameWon = () => {
-  const isWon = checkIfWon(line, puzzle)
-  const puzzleDiv = document.getElementById("puzzle")
+    const isWon = checkIfWon(line, puzzle);
+    const puzzleDiv = document.getElementById("puzzle");
+    
+    if (!isWon) return;
+	
+    if (level === 10) {
+	resetGame();
+    } else {
+	level++;
+	makePuzzle(...puzzles[level]);
+	makeLevels(level);
+    }
 
-  if (isWon && level === 12) {
-    level = 1
-    makePuzzle(...puzzles[level])
-    makeLevels(level)
-  } else if (isWon) {
-    level++
-    makePuzzle(...puzzles[level])
-    makeLevels(level)
-  }
-}
+};
+
+const drawWinScreen = () => {
+    alert("You win! Click to play again");
+};
+
+const resetGame = () => {
+    drawWinScreen()
+    level = 1;
+    makePuzzle(...puzzles[ level ] );
+    makeLevels(level);
+};
+
+
+
