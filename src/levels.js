@@ -1,5 +1,0 @@
-class levels {
-  constructor() {
-
-  }
-}
