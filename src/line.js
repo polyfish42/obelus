@@ -71,6 +71,15 @@ export default class Line {
     }
   }
 
+  closestVertex(distanceFromStart, distanceFromEnd) {
+    if (distanceFromStart < distanceFromEnd) {
+      return this.startVertex;
+    } else {
+      return this.endVertex;
+    }
+
+  }
+
   update(du, dv) {
     if (du === 0 && dv === 0) {
       return null;
@@ -96,11 +105,8 @@ export default class Line {
 
       distanceFromStart = this.distanceFromStart();
       distanceFromEnd = this.distanceFromEnd();
-      if (distanceFromStart < distanceFromEnd) {
-        closestVertex = this.startVertex;
-      } else {
-        closestVertex = this.endVertex;
-      }
+      closestVertex = this.closestVertex(distanceFromStart, distanceFromEnd);
+
 
       if (elbows.has(this.startVertex) && elbows.has(this.endVertex) && this.onEdge.lineThrough === true) {
         this.elbows.delete(closestVertex);
