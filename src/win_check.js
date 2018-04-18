@@ -1,4 +1,10 @@
-import { N, W, EMPTY, WHITE_SQUARE, BLACK_SQUARE } from './coordinate_system'
+import {
+  N,
+  W,
+  EMPTY,
+  WHITE_SQUARE,
+  BLACK_SQUARE
+} from './coordinate_system'
 
 
 Array.prototype.removeUndefined = function(deleteValue) {
@@ -12,10 +18,12 @@ Array.prototype.removeUndefined = function(deleteValue) {
 };
 
 const borders = (u, v) => {
-  return [[u, v, N],
-          [u, v, W],
-          [u, v + 1, N],
-          [u + 1, v, W]]
+  return [
+    [u, v, N],
+    [u, v, W],
+    [u, v + 1, N],
+    [u + 1, v, W]
+  ]
 }
 
 const adjacentSquares = (border, puzzle, sq) => {
@@ -43,17 +51,17 @@ const checkSquare = (square, line, puzzle, oppositeColor) => {
 
     borders(sq.initU, sq.initV).forEach(border => {
       if (puzzle.edges[border] && puzzle.edges[border].lineThrough === false) {
-          adjacentSquares(border, puzzle, sq).forEach(join => {
-            if (join.inside === oppositeColor) {
-              allLegal = false
-              join.setError()
-            }
-            if (!checkedSquares.has(join)) {
+        adjacentSquares(border, puzzle, sq).forEach(join => {
+          if (join.inside === oppositeColor) {
+            allLegal = false
+            join.setError()
+          }
+          if (!checkedSquares.has(join)) {
             checkedSquares.add(join)
             squares.push(join)
-            }
-          })
-        }
+          }
+        })
+      }
     })
   }
   return allLegal
@@ -63,19 +71,19 @@ const allSquaresWon = (line, puzzle) => {
   return Object.values(puzzle.faces).reduce((bool, face) => {
     let isFaceLegal;
     switch (face.inside) {
-    case EMPTY:
-      isFaceLegal = true
-      break;
-    case WHITE_SQUARE:
-      isFaceLegal = checkSquare(face, line, puzzle, BLACK_SQUARE)
-      break;
-    case BLACK_SQUARE:
-      isFaceLegal = checkSquare(face, line, puzzle, WHITE_SQUARE)
-      break;
-    default:
-      isFaceLegal = bool
+      case EMPTY:
+        isFaceLegal = true
+        break;
+      case WHITE_SQUARE:
+        isFaceLegal = checkSquare(face, line, puzzle, BLACK_SQUARE)
+        break;
+      case BLACK_SQUARE:
+        isFaceLegal = checkSquare(face, line, puzzle, WHITE_SQUARE)
+        break;
+      default:
+        isFaceLegal = bool
     }
-  return bool === false ? false : isFaceLegal
+    return bool === false ? false : isFaceLegal
   }, true)
 }
 

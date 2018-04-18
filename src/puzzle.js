@@ -1,4 +1,15 @@
-import { Face, Edge, Vertex, W, N, START, END, BLACK_SQUARE, WHITE_SQUARE, roundRect } from './coordinate_system'
+import {
+  Face,
+  Edge,
+  Vertex,
+  W,
+  N,
+  START,
+  END,
+  BLACK_SQUARE,
+  WHITE_SQUARE,
+  roundRect
+} from './coordinate_system'
 
 const UP = "UP"
 const DOWN = "DOWN"
@@ -21,21 +32,21 @@ export default class Puzzle {
     this.vertices[[u, v]].type = START
   }
 
-  setEnd(u,v, direction) {
+  setEnd(u, v, direction) {
     const end = this.edges[[u, v, direction]] = new Edge(u, v, direction)
 
     let vertex;
     if (direction === N && u === this.width) {
       vertex = this.vertices[[u + 1, v]] = new Vertex(u + 1, v)
-      this.endNub = this.vertices[[u ,v]]
+      this.endNub = this.vertices[[u, v]]
       this.endNubDirection = RIGHT
     } else if (direction === N) {
-      vertex = this.vertices[[u,v]] = new Vertex(u, v)
+      vertex = this.vertices[[u, v]] = new Vertex(u, v)
       this.endNub = this.vertices[[u + 1, v]]
       this.endNubDirection = LEFT
     } else if (direction === W && v === this.height) {
       vertex = this.vertices[[u, v + 1]] = new Vertex(u, v + 1)
-      this.endNub = this.vertices[[u ,v]]
+      this.endNub = this.vertices[[u, v]]
       this.endNubDirection = DOWN
     } else if (direction === W) {
       vertex = this.vertices[[u, v]] = new Vertex(u, v)
@@ -48,7 +59,13 @@ export default class Puzzle {
   }
 
   generatePuzzle() {
-    const { width, height, faces, edges, vertices } = this
+    const {
+      width,
+      height,
+      faces,
+      edges,
+      vertices
+    } = this
 
     for (var u = 0; u < width; u++) {
       for (var v = 0; v < height; v++) {
@@ -66,7 +83,7 @@ export default class Puzzle {
 
     for (var v = 0; v < height; v++) {
       vertices[[u, v]] = new Vertex(width, v)
-      edges[[width, v , W]] = new Edge(width, v, W)
+      edges[[width, v, W]] = new Edge(width, v, W)
     }
 
     vertices[[width, height]] = new Vertex(width, height)
@@ -74,7 +91,7 @@ export default class Puzzle {
 
   drawEndNub(ctx) {
     ctx.beginPath()
-    ctx.moveTo(this.endNub.u,this.endNub.v)
+    ctx.moveTo(this.endNub.u, this.endNub.v)
     switch (this.endNubDirection) {
       case UP:
         ctx.lineTo(this.endNub.u, this.endNub.v - 40)
@@ -149,7 +166,7 @@ export default class Puzzle {
       if (circleRadius > 25) {
         circleRadius = 1
         timeOut = 150
-      } else if (timeOut < 1){
+      } else if (timeOut < 1) {
         circleRadius += 0.3
       }
 
@@ -159,7 +176,7 @@ export default class Puzzle {
       if (timeOut > 0) {
         timeOut -= 1
       } else {
-        ctx.arc(u, v, circleRadius,0,Math.PI*2)
+        ctx.arc(u, v, circleRadius, 0, Math.PI * 2)
       }
       ctx.stroke()
       ctx.closePath()
@@ -169,8 +186,8 @@ export default class Puzzle {
 
   draw(ctx) {
     ctx.beginPath()
-    ctx.clearRect(0,0,500,500)
-    roundRect(ctx,50,50,this.width * 200 + 30,this.height * 200 + 30, 25)
+    ctx.clearRect(0, 0, 500, 500)
+    roundRect(ctx, 50, 50, this.width * 200 + 30, this.height * 200 + 30, 25)
     ctx.fillStyle = "#0F0E6F"
     ctx.fill()
     Object.values(this.faces).forEach(f => f.draw(ctx))

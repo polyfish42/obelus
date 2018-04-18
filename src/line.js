@@ -111,6 +111,37 @@ export default class Line {
     }
   }
 
+  moveToNextEdge(closestVertex, direction, nextEdge, vertices) {
+    this.elbows.add(closestVertex);
+
+    let lastVertex = Array.from(this.elbows)[this.elbows.size - 1];
+    let secondLastVertex = Array.from(this.elbows)[this.elbows.size - 2];
+
+    if (lastVertex && secondLastVertex && ((lastVertex === this.startVertex && secondLastVertex === this.endVertex) || (lastVertex === this.endVertex && secondLastVertex === this.startVertex))) {
+      this.onEdge.lineThrough = true;
+    }
+
+    switch (direction) {
+      case UP:
+        nextEdge = this.edges[[this.coordinate(this.endU), this.coordinate(this.endV) - 1, W]];
+        break;
+      case RIGHT:
+        nextEdge = this.edges[[this.coordinate(this.endU), this.coordinate(this.endV), N]];
+        break;
+      case DOWN:
+        nextEdge = this.edges[[this.coordinate(this.endU), this.coordinate(this.endV), W]];
+        break;
+      case LEFT:
+        nextEdge = this.edges[[this.coordinate(this.endU) - 1, this.coordinate(this.endV), N]];
+        break;
+    }
+    if (nextEdge) {
+      this.onEdge = nextEdge;
+      this.startVertex = vertices[this.onEdge.endPoints[0]];
+      this.endVertex = vertices[this.onEdge.endPoints[1]];
+    }
+  }
+
   update(du, dv) {
     if (du === 0 && dv === 0) {
       return null;
@@ -149,39 +180,10 @@ export default class Line {
         this.blockRightDown = false;
       }
 
-
       if (distanceFromStart === 0 || distanceFromEnd === 0) {
-        this.elbows.add(closestVertex);
-
-        let lastVertex = Array.from(this.elbows)[this.elbows.size - 1];
-        let secondLastVertex = Array.from(this.elbows)[this.elbows.size - 2];
-
-        if (lastVertex && secondLastVertex && ((lastVertex === this.startVertex && secondLastVertex === this.endVertex) || (lastVertex === this.endVertex && secondLastVertex === this.startVertex))) {
-          this.onEdge.lineThrough = true;
-        }
-
-        switch (direction) {
-          case UP:
-            nextEdge = this.edges[[this.coordinate(this.endU), this.coordinate(this.endV) - 1, W]];
-            break;
-          case RIGHT:
-            nextEdge = this.edges[[this.coordinate(this.endU), this.coordinate(this.endV), N]];
-            break;
-          case DOWN:
-            nextEdge = this.edges[[this.coordinate(this.endU), this.coordinate(this.endV), W]];
-            break;
-          case LEFT:
-            nextEdge = this.edges[[this.coordinate(this.endU) - 1, this.coordinate(this.endV), N]];
-            break;
-        }
-        if (nextEdge) {
-          this.onEdge = nextEdge;
-          this.startVertex = vertices[this.onEdge.endPoints[0]];
-          this.endVertex = vertices[this.onEdge.endPoints[1]];
-        }
+        this.moveToNextEdge(closestVertex, direction, nextEdge, vertices);
       }
 
-      // Handle the end piece
       if (this.onEdge.type === END) {
         if (this.startVertex.type === END) {
           distanceFromStart = distanceFromStart - 160;
