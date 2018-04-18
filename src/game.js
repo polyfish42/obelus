@@ -92,7 +92,7 @@ const makeLevels = level => {
   }
 };
 
-let level = 10;
+let level = 1;
 makePuzzle(...puzzles[level]);
 makeLevels(level);
 setInterval(drawFrame(), 10);
@@ -127,7 +127,7 @@ const drawWinScreen = () => {
   animateCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
   const text = document.getElementById("text");
   const winText = document.createElement("p");
-  winText.innerHTML = "You win! Play again?";
+  winText.innerHTML = "You win! Play again.";
   winText.id = "win-text";
   text.appendChild(winText);
 };
