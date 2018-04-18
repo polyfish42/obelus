@@ -81,7 +81,7 @@ const makeLevels = level => {
   for (var i = 0; i < 10; i++) {
     ctx.beginPath();
 
-    if (i + 1 < level) {
+    if (i < level) {
       ctx.fillStyle = "yellow";
     } else {
       ctx.fillStyle = "rgba(255,255,255,0.5)";
