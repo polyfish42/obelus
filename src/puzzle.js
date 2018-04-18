@@ -192,7 +192,11 @@ export default class Puzzle {
     ctx.fill()
     Object.values(this.faces).forEach(f => f.draw(ctx))
     this.drawEndNub(ctx)
-    // Object.values(this.vertices).forEach(v => v.draw(ctx))
-    // Object.values(this.edges).forEach(e => e.draw(ctx))
+  }
+
+  reset() {
+    Object.values(this.edges).forEach(e => {
+      e.lineThrough = false}
+    );
   }
 }

@@ -92,11 +92,6 @@ const makeLevels = level => {
   }
 };
 
-let level = 1;
-makePuzzle(...puzzles[level]);
-makeLevels(level);
-setInterval(drawFrame(), 10);
-
 export const isGameWon = () => {
   const isWon = checkIfWon(line, puzzle);
   const puzzleDiv = document.getElementById("puzzle");
@@ -111,7 +106,6 @@ export const isGameWon = () => {
     makePuzzle(...puzzles[level]);
     makeLevels(level);
   }
-
 };
 
 const removeWinScreen = () => {
@@ -138,3 +132,8 @@ const resetGame = () => {
   makePuzzle(...puzzles[level]);
   makeLevels(level);
 };
+
+let level = 1;
+makePuzzle(...puzzles[level]);
+makeLevels(level);
+setInterval(drawFrame(), 10);

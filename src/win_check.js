@@ -91,8 +91,9 @@ const checkIfWon = (line, puzzle) => {
   if (line.atEnd === true && allSquaresWon(line, puzzle)) {
     return true
   } else {
-    setTimeout(() => puzzle.clearErrors(), 1000)
-    line.reset()
+    setTimeout(() => puzzle.clearErrors(), 1000);
+    puzzle.reset();
+    line.reset();
     return false
   }
 }
