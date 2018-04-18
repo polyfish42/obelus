@@ -80,15 +80,36 @@ export default class Line {
 
   }
 
-    isOnPreviousEdge() {
-	const { elbows, onEdge, startVertex, endVertex } = this;
-	return elbows.has(startVertex) && elbows.has(endVertex) && onEdge.lineThrough === true;
-    }
+  isOnPreviousEdge() {
+    const {
+      elbows,
+      onEdge,
+      startVertex,
+      endVertex
+    } = this;
+    return elbows.has(startVertex) && elbows.has(endVertex) && onEdge.lineThrough === true;
+  }
 
-    deleteLastElbow(closestVertex){
-	this.elbows.delete(closestVertex);
-        this.onEdge.lineThrough = false;	
+  deleteLastElbow(closestVertex) {
+    this.elbows.delete(closestVertex);
+    this.onEdge.lineThrough = false;
+  }
+
+  isNextToCompletedEdge() {
+    return this.elbows.has(this.startVertex) && this.elbows.has(this.endVertex) && this.onEdge.lineThrough === false;
+  }
+
+  blockMovementIntoLine() {
+    let lastVertex = Array.from(this.elbows)[this.elbows.size - 1];
+
+    if (this.startVertex === lastVertex) {
+      this.blockRightDown = true;
+      this.blockLeftUp = false;
+    } else {
+      this.blockLeftUp = true;
+      this.blockRightDown = false;
     }
+  }
 
   update(du, dv) {
     if (du === 0 && dv === 0) {
@@ -117,18 +138,12 @@ export default class Line {
       distanceFromEnd = this.distanceFromEnd();
       closestVertex = this.closestVertex(distanceFromStart, distanceFromEnd);
 
-      if (this.isOnPreviousEdge()) {this.deleteLastElbow(closestVertex);};
-// Handles not lettiing the line run into itself
-      if (elbows.has(this.startVertex) && elbows.has(this.endVertex) && this.onEdge.lineThrough === false) {
-        let lastVertex = Array.from(this.elbows)[this.elbows.size - 1];
+      if (this.isOnPreviousEdge()) {
+        this.deleteLastElbow(closestVertex);
+      };
 
-        if (this.startVertex === lastVertex) {
-          this.blockRightDown = true;
-          this.blockLeftUp = false;
-        } else {
-          this.blockLeftUp = true;
-          this.blockRightDown = false;
-        }
+      if (this.isNextToCompletedEdge()) {
+        this.blockMovementIntoLine();
       } else {
         this.blockLeftUp = false;
         this.blockRightDown = false;
