@@ -92,7 +92,7 @@ const makeLevels = level => {
   }
 };
 
-let level = 1;
+let level = 10;
 makePuzzle(...puzzles[level]);
 makeLevels(level);
 setInterval(drawFrame(), 10);
@@ -107,14 +107,29 @@ export const isGameWon = () => {
     resetGame();
   } else {
     level++;
+    removeWinScreen();
     makePuzzle(...puzzles[level]);
     makeLevels(level);
   }
 
 };
 
+const removeWinScreen = () => {
+  const winText = document.getElementById("win-text");
+  if (winText) {
+    const text = document.getElementById("text");
+    text.removeChild(winText);
+  }
+}
+
 const drawWinScreen = () => {
-  alert("You win! Click to play again");
+  puzzleCtx.clearRect(0,0,puzzleCanvas.width,puzzleCanvas.height);
+  animateCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
+  const text = document.getElementById("text");
+  const winText = document.createElement("p");
+  winText.innerHTML = "You win! Play again?";
+  winText.id = "win-text";
+  text.appendChild(winText);
 };
 
 const resetGame = () => {
