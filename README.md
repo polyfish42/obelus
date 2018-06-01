@@ -69,17 +69,17 @@ const checkSquare = (square, line, puzzle, oppositeColor) => {
 
     borders(sq.initU, sq.initV).forEach(border => {
       if (puzzle.edges[border] && puzzle.edges[border].lineThrough === false) {
-          adjacentSquares(border, puzzle, sq).forEach(join => {
-            if (join.inside === oppositeColor) {
-              allLegal = false
-              join.setError()
-            }
-            if (!checkedSquares.has(join)) {
+        adjacentSquares(border, puzzle, sq).forEach(join => {
+          if (join.inside === oppositeColor) {
+            allLegal = false
+            join.setError()
+          }
+          if (!checkedSquares.has(join)) {
             checkedSquares.add(join)
             squares.push(join)
-            }
-          })
-        }
+          }
+        })
+      }
     })
   }
   return allLegal
